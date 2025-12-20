@@ -7,7 +7,7 @@ Local Server Example:
 - 
 
 
-What is a vector index?
+**What is a vector index?**
 A vector index is a data structure in a vector database designed to enhance the effi-
 ciency of processing, and it is particularly suited for the high-dimensional vector data
 encountered with LLMs. Its function is to streamline the search and retrieval pro-
@@ -27,3 +27,11 @@ and memory consumption. We can use different mathematical methods to compare
 how similar two vector embeddings are—these are useful when searching and match-
 ing different embeddings. Let’s see what vector search means and how we can apply
 different mathematical functions when searching.
+
+
+**what is vector search**
+
+
+
+
+
