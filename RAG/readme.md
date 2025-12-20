@@ -22,5 +22,11 @@ Raw documents
  → Retrieval
 ```
 
+<img width="202" height="315" alt="Screenshot 2025-12-20 at 1 47 59 PM" src="https://github.com/user-attachments/assets/5a68d4ce-2fbe-44a3-8fb8-f1e16b658131" />
 
+<img width="488" height="557" alt="Screenshot 2025-12-20 at 1 46 15 PM" src="https://github.com/user-attachments/assets/a9ddae50-da8c-4eb5-bcda-9f561dc0448f" />
+
+<img width="541" height="588" alt="Untitled" src="https://github.com/user-attachments/assets/f7e4b6c8-5f5b-411f-b8d4-b5ceb93a2fc7" />
+
+<img width="459" height="593" alt="Untitled" src="https://github.com/user-attachments/assets/4a7b1822-560c-484a-8e69-49335b57b1fc" />
 
