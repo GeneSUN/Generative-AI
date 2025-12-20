@@ -5,23 +5,20 @@ When it comes to prompt engineering, i divided into three categories:
 - f
 
 
-## Controlled Behavior Prompting, 
+## Instruction Prompting, 
 
-- Instruction Prompting
+- **What you want**: Explicitly tell the model how to behave.
 
-  Explicitly tell the model how to behave.
-
-- Constraint-Based Prompting
-
-  Explicit rules and restrictions.
+- **what you do not want**: Explicit rules and restrictions.
 ```
     - Do not speculate
     - Cite sources
     - If uncertain, say "I don't know"
 ```
 
-- Role Prompting
+- **Role Prompting**
   ```python
+      # old chatgpt 3.5
       resp = client.chat.completions.create(
           model=model,
           messages=[
@@ -40,7 +37,12 @@ When it comes to prompt engineering, i divided into three categories:
 
 ### few-shot
 
+- https://colab.research.google.com/drive/1DwfVi6N9wDOLUNC0uVTI18BCHy-w0k51#scrollTo=b_Cq1tfrEAWS
+
 ### chain of thought
+
+
+## *Optional
 
 ### Self-consistency sampling
 
