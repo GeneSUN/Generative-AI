@@ -2,7 +2,17 @@
 
 ## How to build Vector Database:
 
-<img width="549" height="288" alt="Screenshot 2025-12-18 at 9 02 05 AM" src="https://github.com/user-attachments/assets/dc409400-b700-4cde-86dd-ff911655bb74" />
+<img width="1250" height="209" alt="Screenshot 2025-12-20 at 2 47 09 PM" src="https://github.com/user-attachments/assets/bcbcaaae-fbaf-4b61-b4cd-89d09e76b344" />
+
+<img width="725" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/9c02983e-634f-4ee9-826c-2caffb211ee6" />
+
+
+
+<img width="1707" height="749" alt="Untitled" src="https://github.com/user-attachments/assets/dfeb0468-2cb2-424a-8c28-964efd63aabc" />
+
+
+<img width="2128" height="392" alt="Untitled" src="https://github.com/user-attachments/assets/0382df3c-057f-47a5-a039-075686374435" />
+
 
 ### Chunk
 
