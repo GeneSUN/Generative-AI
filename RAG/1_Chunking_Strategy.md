@@ -198,7 +198,6 @@ These patterns often indicate suboptimal chunking rules.
 
 The goal is a balanced distribution: neither too fragmented nor too dense.
 
----
 
 #### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
 
