@@ -1,32 +1,110 @@
+# RAG Fundamentals: Retrieve, Read, and Synthesize with LLMs
+
+## Overview
+
+This repository demonstrates how to build a **Retrieval-Augmented Generation (RAG)** system on top of large language models (LLMs).
+
+At its core, RAG follows a simple idea:
+
+**retrieve → read → synthesize**
+
+Instead of asking an LLM to answer questions purely from its internal knowledge, RAG first retrieves relevant external information and then asks the model to reason over that context. This design makes LLM-based systems more accurate, more transparent, and far more useful for real-world, domain-specific applications.
+
+---
 
 
-Think of the LLM as a brilliant professor who’s excellent at explaining and synthesizing ideas, but:
+## Why RAG? Limitation of Direct LLM Question-Answering
 
-- their “memory” is imperfect and not up-to-date, and
-- they can’t open your company wiki or read today’s new paper unless you give it to them.
+<img width="584" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/9a8b0f5b-2b26-495e-bc8e-f75d864ffcf9" />
 
-So when you ask a hard or domain-specific question, you use a librarian (the retriever) first:
+A standalone LLM is excellent at reasoning and explanation, but it has two fundamental limitations:
 
-1. You ask your question.
-2. The librarian searches the library (your document collection) and returns the most relevant pages/sections.
-3. You hand the professor the question + those passages.
-4. The professor reads them and produces a clear, contextual answer — ideally with citations back to the passages.
+- Its knowledge is fixed at training time and can become outdated.
+- It cannot directly access your private documents, internal wikis, or proprietary data.
 
-That’s RAG: retrieve → read → synthesize.
+RAG addresses these limitations by separating **knowledge access** from **reasoning**. The system retrieves the most relevant information at query time and provides it to the LLM as context, allowing the model to focus on synthesis rather than memorization.
 
-```
-Raw documents
- → Chunking
- → Embedding (vectorization)
- → Indexing in a vector database
- → Retrieval
-```
+---
 
-<img width="202" height="315" alt="Screenshot 2025-12-20 at 1 47 59 PM" src="https://github.com/user-attachments/assets/5a68d4ce-2fbe-44a3-8fb8-f1e16b658131" />
+## RAG-Enhanced Question-Answering
 
-<img width="488" height="557" alt="Screenshot 2025-12-20 at 1 46 15 PM" src="https://github.com/user-attachments/assets/a9ddae50-da8c-4eb5-bcda-9f561dc0448f" />
+RAG addresses these limitations by extends the direct workflow with introducing a retrieval step before generation.
+Instead of answering in isolation, the LLM is given relevant external context and asked to reason over it.
 
-<img width="541" height="588" alt="Untitled" src="https://github.com/user-attachments/assets/f7e4b6c8-5f5b-411f-b8d4-b5ceb93a2fc7" />
+<img width="1129" height="187" alt="RAG Workflow" src="https://github.com/user-attachments/assets/ed3733bd-011a-4cd7-8eb3-25661061e720" />
 
-<img width="459" height="593" alt="Untitled" src="https://github.com/user-attachments/assets/4a7b1822-560c-484a-8e69-49335b57b1fc" />
+The high-level flow is:
+
+1. **User Question** – A user submits a question.
+2. **Retrieve** – The system searches for relevant information related to the question.
+3. **Knowledge Store** – Matching content is fetched from an external document collection.
+4. **Augment** – The retrieved content is combined with the original question.
+5. **Generate** – The LLM produces an answer using the augmented input.
+6. **Answer** – A grounded, context-aware response is returned.
+
+---
+
+## Intuition: Librarian and Professor
+
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/51066285-2c27-417a-a311-824bf93eccfb"
+           width="1200" />
+      <br/>
+      <b>Figure 1.</b> Baseline LLM Inference Workflow
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/801aed3e-b215-4a55-8bb2-7c7bf637e5c7"
+           width="1200" />
+      <br/>
+      <b>Figure 2.</b> Retrieval-Augmented Generation (RAG) Workflow
+    </td>
+  </tr>
+</table>
+
+
+A helpful way to think about RAG is as a collaboration between two roles:
+
+- **The Professor (LLM):**  
+  Excellent at reasoning, explaining, and synthesizing ideas, but with imperfect and static memory.
+
+- **The Librarian (Retriever):**  
+  Knows how to search a large collection of documents and find the most relevant information.
+
+When a question is asked:
+1. The librarian searches the library (your document collection).
+2. The most relevant passages are selected.
+3. The professor receives the question along with those passages.
+4. The professor produces a clear, contextual answer grounded in the provided material.
+
+---
+
+## What This Repository Focuses On
+
+<img width="1860" height="277" alt="Untitled" src="https://github.com/user-attachments/assets/5ff2b085-bcca-46ff-8b38-b997f61f4fbe" />
+
+
+This project focuses on the **foundational building blocks** required to implement a RAG system effectively:
+
+- **Chunking**  
+  Breaking raw documents into small, retrievable units that preserve meaning.
+
+- **Embedding**  
+  Converting each chunk into a vector representation suitable for similarity search.
+
+- **Indexing**  
+  Storing embeddings in a vector database for efficient retrieval.
+
+- **Retrieval**  
+  Selecting the most relevant chunks to support a given query.
+
+Together, these steps enable the retrieval layer that powers the RAG workflow.
+
+
+
+
 
