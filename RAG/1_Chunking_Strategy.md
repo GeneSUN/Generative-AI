@@ -2,14 +2,40 @@
 # How to build Vector Database:
 
 
-<img width="1250" height="209" alt="Screenshot 2025-12-20 at 2 47 09 PM" src="https://github.com/user-attachments/assets/bcbcaaae-fbaf-4b61-b4cd-89d09e76b344" />
 
-<img width="725" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/9c02983e-634f-4ee9-826c-2caffb211ee6" />
+
 
 As we discussed before, 
 - the first step of using a RAG is to build a vector database;
-- and the first step of building a vector database, is to chunk the big text document carefully into splits
+  <img width="1250" height="209" alt="Screenshot 2025-12-20 at 2 47 09 PM" src="https://github.com/user-attachments/assets/bcbcaaae-fbaf-4b61-b4cd-89d09e76b344" />
 
+- and the first step of building a vector database, is to chunk the big text document carefully into splits
+  <img width="725" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/767ba798-f487-4283-a7f4-548be5e5cb0a" />
+
+  
+## Table of Contents
+
+- [How to Build a Vector Database](#how-to-build-a-vector-database)
+  - [Why Chunking Matters](#why-chunking-matters)
+  - [Common Chunking Strategies](#common-chunking-strategies)
+  - [A Practical Chunking Flow](#a-practical-chunking-flow)
+    - [Token-based Chunking](#token-based)
+    - [Semantic-based Chunking](#semantic-based)
+  - [Factors That Affect Chunking Strategy](#factors-that-affect-chunking-strategy)
+    - [Nature of the Content](#1-nature-of-the-content)
+    - [Preprocessing Quality](#2-preprocessing-quality)
+    - [Chunk Size Evaluation](#3-chunk-size-evaluation)
+    - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
+    - [Query Characteristics](#5-query-characteristics-often-overlooked)
+    - [Retrieval Strategy](#6-retrieval-strategy)
+    - [Overlap Strategy](#7-overlap-strategy-boundary-effects)
+  - [Evaluating Chunking Quality](#evaluating-chunking-quality)
+    - [Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
+      - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
+      - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
+    - [Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
+    - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
+    - [End-to-End Task Metrics](#end-to-end-task-metrics-gold-standard)
 
 
 ---
