@@ -1,8 +1,12 @@
 
-Cloud Example: 
-- https://colab.research.google.com/drive/16AwwPC9H2jBo3odxXlvTPGLR0ZX4IarY#scrollTo=qqm9Sxi4Y1oH
+There are two ways to index vectors:
 
-Local Server Example:
+1. Cloud Example:
+   
+2. Local Server Example:
+
+rely on your own manual, step by step.
+i recommend going through this first,since it can better help you understand the mechanisms.
 
 - 
 
@@ -30,8 +34,5 @@ different mathematical functions when searching.
 
 
 **what is vector search**
-
-
-
 
 
