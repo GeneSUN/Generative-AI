@@ -189,13 +189,10 @@ def answer_user_question(customer_id: str, user_query: str, retriever, llm):
     # 2) Classify intent
     intent = classify_question(user_query)
 
-    # 3) Build retrieval query
-    rag_query = build_rag_query(user_query)
-
-    # 4) Retrieve reference knowledge
+    # 3) Retrieve reference knowledge
     rag_context = retrieve_kpi_context(rag_query, retriever)
 
-    # 5) Build prompt dynamically
+    # 4) Build prompt dynamically
     prompt = build_prompt(
         intent=intent,
         user_query=user_query,
@@ -203,7 +200,7 @@ def answer_user_question(customer_id: str, user_query: str, retriever, llm):
         rag_context=rag_context,
     )
 
-    # 6) LLM inference
+    # 5) LLM inference
     return llm.generate(prompt)
 ```
 
