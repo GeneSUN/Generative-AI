@@ -189,7 +189,6 @@ Good chunking balances **semantic coherence**, **retrieval effectiveness**, and 
 
 Below are two practical, model-agnostic criteria for evaluating chunk quality.
 
----
 
 ### Embedding-Space Metrics (Cheap & Fast)
 
