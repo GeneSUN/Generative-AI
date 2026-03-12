@@ -7,8 +7,7 @@ At its core, RAG follows a simple idea:
 
 **retrieve → read → synthesize**
 
-Instead of asking an LLM to answer questions purely from its internal knowledge, RAG first retrieves relevant external information and then asks the model to reason over that context. This design makes LLM-based systems more accurate, more transparent, and far more useful for real-world, domain-specific applications.
-
+Instead of asking an LLM to answer questions purely from its internal knowledge, RAG (1) retrieves relevant external information and (2) asks the model to reason over that context. 
 
 1. [Why RAG? Limitation of Direct LLM Question-Answering](#why-rag-limitation-of-direct-llm-question-answering)
 2. [RAG-Enhanced Question-Answering](#rag-enhanced-question-answering)
