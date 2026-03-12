@@ -1,5 +1,4 @@
-# RAG Fundamentals: Retrieve, Read, and Synthesize with LLMs
-
+# RAG Fundamentals: Retrieve, Read, and Synthesize with LLMs   
 ## Overview
 
 This repository demonstrates how to build a **Retrieval-Augmented Generation (RAG)** system on top of large language models (LLMs).
@@ -9,6 +8,13 @@ At its core, RAG follows a simple idea:
 **retrieve → read → synthesize**
 
 Instead of asking an LLM to answer questions purely from its internal knowledge, RAG first retrieves relevant external information and then asks the model to reason over that context. This design makes LLM-based systems more accurate, more transparent, and far more useful for real-world, domain-specific applications.
+
+
+1. [Why RAG? Limitation of Direct LLM Question-Answering](#why-rag-limitation-of-direct-llm-question-answering)
+2. [RAG-Enhanced Question-Answering](#rag-enhanced-question-answering)
+3. [Intuition: Librarian and Professor](#intuition-librarian-and-professor)
+4. [What This Repository Focuses On](#what-this-repository-focuses-on)
+
 
 ---
 
