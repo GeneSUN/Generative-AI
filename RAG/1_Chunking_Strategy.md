@@ -15,27 +15,26 @@ As we discussed before,
   
 ## Table of Contents
 
-- [How to Build a Vector Database](#how-to-build-a-vector-database)
-  - [Why Chunking Matters](#why-chunking-matters)
-  - [Common Chunking Strategies](#common-chunking-strategies)
-  - [A Practical Chunking Flow](#a-practical-chunking-flow)
-    - [Token-based Chunking](#token-based)
-    - [Semantic-based Chunking](#semantic-based)
-  - [Factors That Affect Chunking Strategy](#factors-that-affect-chunking-strategy)
-    - [Nature of the Content](#1-nature-of-the-content)
-    - [Preprocessing Quality](#2-preprocessing-quality)
-    - [Chunk Size Evaluation](#3-chunk-size-evaluation)
-    - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
-    - [Query Characteristics](#5-query-characteristics-often-overlooked)
-    - [Retrieval Strategy](#6-retrieval-strategy)
-    - [Overlap Strategy](#7-overlap-strategy-boundary-effects)
-  - [Evaluating Chunking Quality](#evaluating-chunking-quality)
-    - [Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
-      - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
-      - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
-    - [Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
-    - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
-    - [End-to-End Task Metrics](#end-to-end-task-metrics-gold-standard)
+
+- [1. Why Chunking Matters](#why-chunking-matters)
+- [2. Common Chunking Strategies](#common-chunking-strategies)
+  - [Token-based Chunking](#token-based)
+  - [Semantic-based Chunking](#semantic-based)
+- [3. Factors That Affect Chunking Strategy](#factors-that-affect-chunking-strategy)
+  - [Nature of the Content](#1-nature-of-the-content)
+  - [Preprocessing Quality](#2-preprocessing-quality)
+  - [Chunk Size Evaluation](#3-chunk-size-evaluation)
+  - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
+  - [Query Characteristics](#5-query-characteristics-often-overlooked)
+  - [Retrieval Strategy](#6-retrieval-strategy)
+  - [Overlap Strategy](#7-overlap-strategy-boundary-effects)
+- [4. Evaluating Chunking Quality](#evaluating-chunking-quality)
+  - [Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
+    - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
+    - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
+  - [Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
+  - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
+  - [End-to-End Task Metrics](#end-to-end-task-metrics-gold-standard)
 
 
 ---
@@ -45,10 +44,10 @@ As we discussed before,
 
 Before a document can be embedded and indexed, it must be split into smaller units. This is necessary because:
 
-### 1. LLM Context and Latency Constraints
+### 1.1. LLM Context and Latency Constraints
 LLMs have limited context windows and non-trivial inference costs. Entire documents are too large to embed, retrieve, or pass to a model efficiently. Chunking allows the system to work with manageable units of information.
 
-### 2. Retrieval Granularity and Semantic Precision
+### 1.2. Retrieval Granularity and Semantic Precision
 Retrieval works best when each chunk represents a **single, coherent idea**.  
 - If chunks are too large, retrieval becomes noisy.  
 - If chunks are too small, meaning is lost.
@@ -70,9 +69,7 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 
 > In practice, the most common real-world strategy is **token-based chunking with a sliding window**.
 
----
-
-## A Practical Chunking Flow
+**A Practical Chunking Flow**
 
 This is illustrate in below notebook
 - https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=wvFBo0FS7X1o
@@ -89,7 +86,7 @@ The chunking flow follows two steps:
 ### Semantic-based  
 <img width="2128" height="392" alt="Untitled" src="https://github.com/user-attachments/assets/0382df3c-057f-47a5-a039-075686374435" />
 
-
+---
 
 
 ## Factors That Affect Chunking Strategy
@@ -111,7 +108,6 @@ Different content types naturally suggest different chunk boundaries.
 
 Chunking should respect the **natural structure** of the content whenever possible.
 
----
 
 ### 2. Preprocessing Quality
 
@@ -123,7 +119,6 @@ Before chunking, text often needs cleanup:
 
 Bad preprocessing leads to bad chunks, which leads to bad retrieval.
 
----
 
 ### 3. Chunk Size Evaluation
 
@@ -137,7 +132,6 @@ Common evaluation signals include:
 
 Chunk size should be treated as a **tunable parameter**, not a fixed rule.
 
----
 
 ### 4. Embedding Model and LLM Constraints
 
@@ -148,7 +142,6 @@ Different models behave differently:
 
 Chunking must be compatible with the **embedding model**, not just the LLM.
 
----
 
 ### 5. Query Characteristics (Often Overlooked)
 
@@ -161,7 +154,6 @@ Examples:
 
 > Chunking is query-driven, not only document-driven.
 
----
 
 ### 6. Retrieval Strategy
 
@@ -175,7 +167,6 @@ Different retrievers prefer different chunk sizes.
 
 Chunking must align with the retrieval method you plan to use.
 
----
 
 ### 7. Overlap Strategy (Boundary Effects)
 
