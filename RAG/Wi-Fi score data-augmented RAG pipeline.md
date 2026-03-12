@@ -2,6 +2,20 @@
 
 <img width="795" height="647" alt="Untitled" src="https://github.com/user-attachments/assets/1084ee12-b62a-4300-bca7-068bb8067dcf" />
 
+## Table of Contents
+
+- [Wi-Fi score data-augmented RAG pipeline](#wi-fi-score-data-augmented-rag-pipeline)
+- [Step 1 - SQL data Input](#step-1---sql-data-input)
+  - [1.1 Query data by customer ID](#11-query-data-by-customer-id)
+  - [1.2 Convert structured data → natural language](#12-convert-structured-data--natural-language)
+- [Step 2 — Retrieve relevant KPI explanations from RAG](#step-2--retrieve-relevant-kpi-explanations-from-rag)
+  - [Step 2.1 classify the user question](#step-21-classify-the-user-question)
+  - [Step 2.2 generate a retrieval-focused query](#step-22-generate-a-retrieval-focused-query)
+- [Step 3 — LLM prompt + data + RAG context](#step-3--llm-prompt--data--rag-context)
+  - [3.1 Define a small set of prompt “modes”](#31-define-a-small-set-of-prompt-modes)
+  - [3.2 Route user questions to a mode](#32-route-user-questions-to-a-mode)
+  - [3.3 Parameterize your prompt](#33-parameterize-your-prompt)
+- [Step 4: Putting it all together (clean pipeline)](#step-4-putting-it-all-together-clean-pipeline)
 
 # Step 1 - SQL data Input
 
