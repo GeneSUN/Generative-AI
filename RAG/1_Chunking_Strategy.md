@@ -227,25 +227,6 @@ Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
 - Sharp drops in similarity often indicate topic boundaries, which can be desirable.
 
 
-## Best Practices & Implementation Guidelines
-
-### 0. Define Evaluation Strategy
-
-### 1. Begin with Baseline Testing
-
-Start simple (e.g., **fixed-size chunking** with different **chunk** and **overlap sizes**). Gather metrics to establish a reference point before introducing complexity.
-
-
-### 2. Optimize Chunk Size & Overlap
-
-- General text: 200–500 tokens, 10–20% overlap.
-- Code or very technical content: 100–200 tokens, 15–25% overlap.
-- Narrative content: 500–1000 tokens to preserve context.
-
-
-### 3. Add Metadata to Chunks
-Storing metadata (e.g., section title, document type, date) helps with filtering and contextual retrieval.
-
 
 
 
