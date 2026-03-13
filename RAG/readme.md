@@ -117,8 +117,8 @@ Together, these steps enable the retrieval layer that powers the RAG workflow.
 - [Databricks Example](https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089)
 - [Ragas: Automated Evaluation of Retrieval Augmented Generation](https://arxiv.org/pdf/2309.15217)
 - [A Systematic Framework for Enterprise Knowledge Retrieval: Leveraging LLM-Generated Metadata to Enhance RAG Systems](https://arxiv.org/pdf/2512.05411)
+- [Each to Their Own: Exploring the Optimal Embedding in RAG](https://arxiv.org/pdf/2507.17442v1)
 
-- Confident RAG: Enhancing the Performance of LLMs for Mathematics Question Answering through Multi-Embedding and Confidence Scoring
 
 
 
