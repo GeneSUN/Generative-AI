@@ -27,12 +27,12 @@ As we discussed before,
   - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
   - [Retrieval Strategy](#6-retrieval-strategy)
 - [4. Evaluating Chunking Quality](#evaluating-chunking-quality)
-  - [Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
+  - [1. Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
     - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
     - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
-  - [Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
-  - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
-  - [End-to-End Task Metrics](#end-to-end-task-metrics-gold-standard)
+  - [2. Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
+    - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
+  - [3. RAGAS](#end-to-end-task-metrics-gold-standard)
 
 
 
@@ -213,38 +213,158 @@ Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
 
 ### Retrieval-Centered Metrics (Most Common & Practical)
 
-#### Retrieval Precision / Recall @ k
+### Retrieval Precision / Recall @ k
 
 Question: Are the right chunks being retrieved?
 
 - Precision@k: how many retrieved chunks are actually relevant
 - Recall@k: whether relevant chunks appear in the top-k results
 
+```
+Imagine your resume is split into 6 chunks:
+
+Chunk 1: Summary — "Data Scientist with expertise in Fraud Detection..."
+Chunk 2: Verizon experience — "Developed ETL pipelines, churn prediction..."
+Chunk 3: Walmart experience — "Conducted Causal Inference, self-checkout ads..."
+Chunk 4: Wi-Fi/5G scoring project — "Designed scoring systems, 82% accuracy..."
+Chunk 5: Anomaly detection project — "Built global anomaly detection model..."
+Chunk 6: Skills — "Python, Scala, SQL, Spark, TensorFlow, AWS..."
+
+Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
+
+
+Retrieved = [Chunk 2, Chunk 6, Chunk 4]
+              ✅ relevant  ❌ wrong  ✅ relevant
+Precision@3 = 2/3 = 0.67
+```
+
 **not realistic, because Requires relevance labels (manual or heuristic)**
 
----
+
 
 ### LLM-Based Evaluation (Higher Signal, Higher Cost)
 
+```
+Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
 
-#### Answer Faithfulness / Groundedness
-
-Question: Does the LLM’s answer stay grounded in retrieved chunks?
-
-- Ask an LLM to check whether answers are supported by context
-
-Often phrased as: ```“Is this answer fully supported by the provided context?”```
-
+Chunk 2  -LLM→  RELEVANT     (was retrieved ✅)
+Chunk 6  -LLM→  NOT RELEVANT (was retrieved ❌)
+Chunk 4  -LLM→  RELEVANT     (was retrieved ✅)
+```
 
 ---
 
-### End-to-End Task Metrics (Gold Standard)
+### RAGAS
 
-These evaluate chunking only through final system performance.
+- https://arxiv.org/pdf/2309.15217
 
-#### QA Accuracy / Task Success Rate
+**1. What RAGAS measures**
 
-Question: Does better chunking improve final answers?
+```
+1. faithfulness        — Is the answer grounded in the retrieved context?
+                         (catches hallucination)
 
-- Compare different chunking strategies, Keep everything else fixed
-- Measure task success (QA accuracy, troubleshooting resolution, etc.)
+2. answer_relevancy    — Does the answer actually address the question?
+                         (catches vague or off-topic answers)
+
+3. context_precision   — Are the retrieved chunks relevant to the question?
+                         (equivalent to Precision@k with LLM judge)
+
+4. context_recall      — Did retrieval find all the information needed?
+                         (equivalent to Recall@k — requires ground truth answer)
+```
+
+**2. RAGAS needs a dataset of:**
+
+```
+{
+    "question":         the question you ask
+    "answer":           what your RAG pipeline actually returned
+    "contexts":         the chunks your retriever returned (list of strings)
+    "ground_truth":     the ideal answer (needed for context_recall only)
+}
+```
+
+```
+question:
+"What machine learning work did this person do at Verizon?"
+
+answer:
+"At Verizon, this person developed ETL pipelines and predictive 
+models for churn prediction and anomaly detection across Wi-Fi 
+and 5G services. They also built a 5G Home Churn prediction model 
+using Time Series Classification methods including CNN, ResNets, 
+and KNN, achieving 78% accuracy. Additionally, they developed a 
+global anomaly detection model using probabilistic time series 
+forecasting for 5G network stations."
+
+contexts: [
+    "Data Scientist, Verizon Contract (09/2023 - Present)
+     Developed ETL pipelines and predictive models for churn 
+     prediction and anomaly detection across Verizon Wi-Fi and 
+     5G services. Delivered scalable solutions using Spark, 
+     forecasting models, and ML/DL techniques.",
+
+    "Wi-Fi and 5G Home Internet Scoring System (Verizon, 2024)
+     Designed scoring systems aggregating KPIs using statistical 
+     and domain expertise. Built an Extender Recommendation Model 
+     with 82% accuracy, 78% precision, 82% recall. Developed 5G 
+     Home Churn model using Time Series Classification 
+     (CNN, ResNets, KNN).",
+
+    "5G Network Station Anomaly Detection (Verizon, 2024)
+     Built a global anomaly detection model using probabilistic 
+     time series forecasting. Enabled early detection of 5G 
+     station anomalies, reducing downtime during 4G to 5G 
+     transition.",
+]
+
+ground_truth:
+"At Verizon, this person developed churn prediction models, 
+anomaly detection for Wi-Fi and 5G stations, and a 5G Home 
+Churn prediction model using Time Series Classification."
+```
+
+**3. Example output:**
+```
+{
+    "faithfulness":      0.92,
+    "answer_relevancy":  0.87,
+    "context_precision": 0.71,
+    "context_recall":    0.65,
+}
+```
+
+**How to interpret each score:**
+```
+faithfulness = 0.92  ✅ Good
+→ 92% of claims in the answers are supported by retrieved chunks.
+  The LLM is not hallucinating much.
+
+answer_relevancy = 0.87  ✅ Good  
+→ Answers are mostly on-topic and address the question directly.
+  Some answers may be slightly verbose or drift off topic.
+
+context_precision = 0.71  ⚠️ Needs work
+→ Only 71% of retrieved chunks were actually useful.
+  29% of what was retrieved was noise — wrong chunks being pulled in.
+  Fix: try smaller chunk size, better embedding model, or hybrid search.
+
+context_recall = 0.65  ❌ Problem
+→ Retriever is only finding 65% of the information needed.
+  It is missing relevant chunks for some questions.
+  Fix: increase k, try MMR retrieval, or check chunk boundaries.
+
+```
+
+```
+question                              faith  ans_rel  ctx_prec  ctx_rec
+"What ML work at Verizon?"            1.00    0.91     0.83      0.80
+"What big data tools?"                0.95    0.88     0.67      0.67
+"Accuracy of Extender model?"         1.00    0.95     1.00      1.00
+"Where was the internship?"           0.75    0.82     0.50      0.50
+"Educational background?"             0.90    0.79     0.67      0.50
+```
+
+
+
