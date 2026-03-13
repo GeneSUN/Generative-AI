@@ -1,0 +1,2 @@
+- [Chunk+embedding+index Notebook](https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc)
+- [Databricks Example](https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089)
