@@ -2,8 +2,8 @@
 # How to build Vector Database:
 
 
-
-
+- https://github.com/GeneSUN/Generative-AI/blob/main/src/rag/chunk_strategy.py
+- https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=XgS3Yx_57TPu
 
 As we discussed before, 
 - the first step of using a RAG is to build a vector database;
@@ -37,6 +37,8 @@ As we discussed before,
   - [End-to-End Task Metrics](#end-to-end-task-metrics-gold-standard)
 
 
+
+
 ---
 
 
@@ -57,6 +59,8 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 ---
 
 ## Common Chunking Strategies
+
+- https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089?utm_source=chatgpt.com
 
 | Strategy                    | How It Splits Text            | Advantage                         | Limitation                  | When to Use                |
 |----------------------------|-------------------------------|-----------------------------------|-----------------------------|----------------------------|
