@@ -238,9 +238,9 @@ Start simple (e.g., **fixed-size chunking** with different **chunk** and **overl
 
 ### 2. Optimize Chunk Size & Overlap
 
-General text: 200–500 tokens, 10–20% overlap.
-Code or very technical content: 100–200 tokens, 15–25% overlap.
-Narrative content: 500–1000 tokens to preserve context.
+- General text: 200–500 tokens, 10–20% overlap.
+- Code or very technical content: 100–200 tokens, 15–25% overlap.
+- Narrative content: 500–1000 tokens to preserve context.
 
 
 ### 3. Add Metadata to Chunks
