@@ -153,3 +153,24 @@ question                              faith  ans_rel  ctx_prec  ctx_rec
 "Educational background?"             0.90    0.79     0.67      0.50
 ```
 
+
+
+## Best Practices & Implementation Guidelines
+
+### 0. Define Evaluation Strategy
+
+### 1. Begin with Baseline Testing
+
+Start simple (e.g., **fixed-size chunking** with different **chunk** and **overlap sizes**). Gather metrics to establish a reference point before introducing complexity.
+
+
+### 2. Optimize Chunk Size & Overlap
+
+- General text: 200–500 tokens, 10–20% overlap.
+- Code or very technical content: 100–200 tokens, 15–25% overlap.
+- Narrative content: 500–1000 tokens to preserve context.
+
+
+### 3. Add Metadata to Chunks
+Storing metadata (e.g., section title, document type, date) helps with filtering and contextual retrieval.
+
