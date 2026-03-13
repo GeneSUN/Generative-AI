@@ -27,12 +27,9 @@ As we discussed before,
   - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
   - [Retrieval Strategy](#6-retrieval-strategy)
 - [4. Evaluating Chunking Quality](#evaluating-chunking-quality)
-  - [1. Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
-    - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
-    - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
-  - [2. Retrieval-Centered Metrics](#retrieval-centered-metrics-most-common--practical)
-    - [LLM-Based Evaluation](#llm-based-evaluation-higher-signal-higher-cost)
-  - [3. RAGAS](#end-to-end-task-metrics-gold-standard)
+  - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
+  - [Inter-Chunk Redundancy](#2-inter-chunk-redundancy-similarity-between-adjacent-chunks)
+
 
 
 
@@ -96,6 +93,28 @@ Overlap improves recall but increases:
 - retrieval redundancy
 
 It should be used deliberately.
+
+### metadata
+
+- https://scholar.google.com/scholar?hl=en&as_sdt=0%2C48&q=rag+chunk+metadata&btnG=
+- https://arxiv.org/pdf/2512.05411
+
+```
+┌─────────────────────────────────────────┐
+│  CHUNK CONTENT                          │
+│  "Built anomaly detection model using   │
+│   probabilistic time series forecasting │
+│   for 5G network stations..."           │
+│                                         │
+│  TAGS (metadata)                        │
+│  section  = "projects"                  │
+│  company  = "verizon"                   │
+│  topic    = "anomaly_detection"         │
+│  person   = "zhe_sun"                   │
+└─────────────────────────────────────────┘
+
+```
+
 
 ---
 
@@ -169,11 +188,9 @@ Good chunking balances **semantic coherence**, **retrieval effectiveness**, and 
 Below are two practical, model-agnostic criteria for evaluating chunk quality.
 
 
-### Embedding-Space Metrics (Cheap & Fast)
-
 - https://github.com/GeneSUN/Generative-AI/blob/main/RAG/evaluation.py
 
-#### 1. Intra-Chunk Coherence: Chunk Length Distribution
+### 1. Intra-Chunk Coherence: Chunk Length Distribution
 
 ```
 Chunk 1:  sentence1 ←→ sentence2 ←→ sentence3
@@ -187,7 +204,7 @@ It embeds every sentence inside the chunk, builds a full similarity matrix of al
 
 
 
-#### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
+### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
 
 
 ```
@@ -208,6 +225,29 @@ Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
 - If similarity is consistently below ~0.7 → increase overlap or chunk size.
 - If similarity is consistently above ~0.95 → reduce overlap to avoid redundancy.
 - Sharp drops in similarity often indicate topic boundaries, which can be desirable.
+
+
+## Best Practices & Implementation Guidelines
+
+### 0. Define Evaluation Strategy
+
+### 1. Begin with Baseline Testing
+
+Start simple (e.g., **fixed-size chunking** with different **chunk** and **overlap sizes**). Gather metrics to establish a reference point before introducing complexity.
+
+
+### 2. Optimize Chunk Size & Overlap
+
+General text: 200–500 tokens, 10–20% overlap.
+Code or very technical content: 100–200 tokens, 15–25% overlap.
+Narrative content: 500–1000 tokens to preserve context.
+
+
+### 3. Add Metadata to Chunks
+Storing metadata (e.g., section title, document type, date) helps with filtering and contextual retrieval.
+
+
+
 
 
 
