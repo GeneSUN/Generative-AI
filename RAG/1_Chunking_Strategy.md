@@ -1,17 +1,5 @@
 
 # How to build Vector Database:
-
-
-- https://github.com/GeneSUN/Generative-AI/blob/main/src/rag/chunk_strategy.py
-- https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=XgS3Yx_57TPu
-
-As we discussed before, 
-- the first step of using a RAG is to build a vector database;
-  <img width="1250" height="209" alt="Screenshot 2025-12-20 at 2 47 09 PM" src="https://github.com/user-attachments/assets/bcbcaaae-fbaf-4b61-b4cd-89d09e76b344" />
-
-- and the first step of building a vector database, is to chunk the big text document carefully into splits
-  <img width="725" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/767ba798-f487-4283-a7f4-548be5e5cb0a" />
-
   
 ## Table of Contents
 
@@ -32,6 +20,15 @@ As we discussed before,
 
 
 
+As we discussed before, 
+- the first step of using a RAG is to build a vector database;
+  <img width="1250" height="209" alt="Screenshot 2025-12-20 at 2 47 09 PM" src="https://github.com/user-attachments/assets/bcbcaaae-fbaf-4b61-b4cd-89d09e76b344" />
+
+- and the first step of building a vector database, is to chunk the big text document carefully into splits
+  <img width="725" height="88" alt="Untitled" src="https://github.com/user-attachments/assets/767ba798-f487-4283-a7f4-548be5e5cb0a" />
+
+- https://github.com/GeneSUN/Generative-AI/blob/main/src/rag/chunk_strategy.py
+- https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=XgS3Yx_57TPu
 
 
 ---
