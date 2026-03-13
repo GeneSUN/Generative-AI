@@ -118,6 +118,7 @@ Together, these steps enable the retrieval layer that powers the RAG workflow.
 - [Ragas: Automated Evaluation of Retrieval Augmented Generation](https://arxiv.org/pdf/2309.15217)
 - [A Systematic Framework for Enterprise Knowledge Retrieval: Leveraging LLM-Generated Metadata to Enhance RAG Systems](https://arxiv.org/pdf/2512.05411)
 - [Each to Their Own: Exploring the Optimal Embedding in RAG](https://arxiv.org/pdf/2507.17442v1)
+- [Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG](https://arxiv.org/pdf/2501.09136)
 
 
 
