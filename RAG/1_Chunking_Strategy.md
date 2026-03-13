@@ -62,25 +62,22 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 
 - https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089?utm_source=chatgpt.com
 
-| Strategy                    | How It Splits Text            | Advantage                         | Limitation                  | When to Use                |
-|----------------------------|-------------------------------|-----------------------------------|-----------------------------|----------------------------|
-| Sentence-based             | Sentence boundaries           | Preserves meaning                 | Context may be too narrow   | Short QA                   |
-| Fixed-length               | Every N characters            | Simple and fast                   | Breaks semantics            | Baselines, prototyping     |
-| Token-based                | Every N tokens                | Model-aware                       | Can cut ideas               | Embedding systems          |
-| Sliding window             | Fixed size + overlap          | Preserves boundary context        | Redundant chunks            | Dense retrieval            |
-| Semantic         | Topic-based                   | High coherence                    | More complex                | High-quality RAG           |
-| Hierarchical               | Sections → subsections        | Preserves structure               | Needs structured docs       | Manuals, papers            |
+
+
 
 > In practice, the most common real-world strategy is **token-based chunking with a sliding window**.
 
 **A Practical Chunking Flow**
 
-This is illustrate in below notebook
-- https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=wvFBo0FS7X1o
+<img width="733" height="287" alt="Screenshot 2026-03-12 at 6 46 02 PM" src="https://github.com/user-attachments/assets/74b522b8-7255-4587-97e1-56599bec847f" />
+
 
 The chunking flow follows two steps:
 - firstly split the entire document into each sentence;
 - then combine sentence or tokens together following certain rules.
+- This is illustrate in below [notebook](https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=wvFBo0FS7X1o) 
+
+
 
 ### Token-based  
 <img width="1707" height="749" alt="Untitled" src="https://github.com/user-attachments/assets/dfeb0468-2cb2-424a-8c28-964efd63aabc" />
