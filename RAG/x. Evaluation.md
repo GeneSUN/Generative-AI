@@ -1,5 +1,54 @@
 
 
+## Evaluating Chunking Quality
+
+Chunking is a design decision, and like any design decision, it must be evaluated.  
+Good chunking balances **semantic coherence**, **retrieval effectiveness**, and **system efficiency**.
+
+Below are two practical, model-agnostic criteria for evaluating chunk quality.
+
+
+- https://github.com/GeneSUN/Generative-AI/blob/main/RAG/evaluation.py
+
+### 1. Intra-Chunk Coherence: Chunk Length Distribution
+
+```
+Chunk 1:  sentence1 ←→ sentence2 ←→ sentence3
+                    all pairs averaged
+```
+
+It embeds every sentence inside the chunk, builds a full similarity matrix of all sentence pairs, and averages the upper triangle.
+
+- High score → all sentences in the chunk are about the same topic — the chunk is coherent and focused
+- Low score → sentences inside the chunk are jumping between topics — the chunk is incoherent and will confuse retrieval
+
+
+
+### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
+
+
+```
+Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
+         sim1       sim2       sim3
+```
+
+**How to interpret similarity scores:**
+
+| Similarity Range | Interpretation |
+|------------------|----------------|
+| 0.9 – 1.0        | Highly redundant chunks |
+| 0.7 – 0.9        | Healthy continuity |
+| 0.5 – 0.7        | Weak continuity |
+| < 0.5            | Over-fragmented chunks |
+
+**Practical tuning guidance:**
+- If similarity is consistently below ~0.7 → increase overlap or chunk size.
+- If similarity is consistently above ~0.95 → reduce overlap to avoid redundancy.
+- Sharp drops in similarity often indicate topic boundaries, which can be desirable.
+
+
+
+
 ## Retrieval Precision / Recall @ k
 
 Question: Are the right chunks being retrieved?
