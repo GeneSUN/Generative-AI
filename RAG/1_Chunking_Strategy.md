@@ -20,14 +20,12 @@ As we discussed before,
 - [2. Common Chunking Strategies](#common-chunking-strategies)
   - [Token-based Chunking](#token-based)
   - [Semantic-based Chunking](#semantic-based)
+  - [Overlap Strategy](#7-overlap-strategy-boundary-effects)
 - [3. Factors That Affect Chunking Strategy](#factors-that-affect-chunking-strategy)
   - [Nature of the Content](#1-nature-of-the-content)
-  - [Preprocessing Quality](#2-preprocessing-quality)
-  - [Chunk Size Evaluation](#3-chunk-size-evaluation)
+  - [Query Characteristics](#2-query-characteristics-often-overlooked)
   - [Embedding Model and LLM Constraints](#4-embedding-model-and-llm-constraints)
-  - [Query Characteristics](#5-query-characteristics-often-overlooked)
   - [Retrieval Strategy](#6-retrieval-strategy)
-  - [Overlap Strategy](#7-overlap-strategy-boundary-effects)
 - [4. Evaluating Chunking Quality](#evaluating-chunking-quality)
   - [Embedding-Space Metrics](#embedding-space-metrics-cheap--fast)
     - [Intra-Chunk Coherence](#1-intra-chunk-coherence-chunk-length-distribution)
@@ -60,7 +58,7 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 
 ## Common Chunking Strategies
 
-- https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089?utm_source=chatgpt.com
+- https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089
 
 
 
@@ -75,7 +73,7 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 The chunking flow follows two steps:
 - firstly split the entire document into each sentence;
 - then combine sentence or tokens together following certain rules.
-- This is illustrate in below [notebook](https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc#scrollTo=wvFBo0FS7X1o) 
+- This is illustrate in below [notebook](https://colab.research.google.com/drive/1uwZ-B-E_I4kmCbnAk53wzJr_ZS88Jedc) 
 
 
 
@@ -86,6 +84,18 @@ The chunking flow follows two steps:
 
 ### Semantic-based  
 <img width="2128" height="392" alt="Untitled" src="https://github.com/user-attachments/assets/0382df3c-057f-47a5-a039-075686374435" />
+
+
+### *. Overlap Strategy (Boundary Effects)
+
+Chunk boundaries can cut important context. Overlap mitigates this by allowing adjacent chunks to share content.
+
+Overlap improves recall but increases:
+- storage size
+- embedding cost
+- retrieval redundancy
+
+It should be used deliberately.
 
 ---
 
@@ -110,41 +120,8 @@ Different content types naturally suggest different chunk boundaries.
 Chunking should respect the **natural structure** of the content whenever possible.
 
 
-### 2. Preprocessing Quality
 
-Before chunking, text often needs cleanup:
-- removing boilerplate
-- fixing encoding issues
-- normalizing whitespace
-- stripping headers/footers
-
-Bad preprocessing leads to bad chunks, which leads to bad retrieval.
-
-
-### 3. Chunk Size Evaluation
-
-Chunk size is not theoretical—it must be **measured and compared**.
-
-Common evaluation signals include:
-- retrieval relevance
-- answer faithfulness
-- latency and cost
-- redundancy in retrieved results
-
-Chunk size should be treated as a **tunable parameter**, not a fixed rule.
-
-
-### 4. Embedding Model and LLM Constraints
-
-Different models behave differently:
-- Some embedding models perform better on shorter, focused chunks
-- Others tolerate longer inputs
-- Token limits directly influence feasible chunk sizes
-
-Chunking must be compatible with the **embedding model**, not just the LLM.
-
-
-### 5. Query Characteristics (Often Overlooked)
+### 2. Query Characteristics (Often Overlooked)
 
 Chunking should match **how users ask questions**, not just how documents are written.
 
@@ -154,6 +131,16 @@ Examples:
 - Troubleshooting → procedure-sized chunks
 
 > Chunking is query-driven, not only document-driven.
+
+
+### 3. Embedding Model and LLM Constraints
+
+Different models behave differently:
+- Some embedding models perform better on shorter, focused chunks
+- Others tolerate longer inputs
+- Token limits directly influence feasible chunk sizes
+
+Chunking must be compatible with the **embedding model**, not just the LLM.
 
 
 ### 6. Retrieval Strategy
@@ -169,16 +156,7 @@ Different retrievers prefer different chunk sizes.
 Chunking must align with the retrieval method you plan to use.
 
 
-### 7. Overlap Strategy (Boundary Effects)
 
-Chunk boundaries can cut important context. Overlap mitigates this by allowing adjacent chunks to share content.
-
-Overlap improves recall but increases:
-- storage size
-- embedding cost
-- retrieval redundancy
-
-It should be used deliberately.
 
 ---
 
@@ -197,36 +175,25 @@ Below are two practical, model-agnostic criteria for evaluating chunk quality.
 
 #### 1. Intra-Chunk Coherence: Chunk Length Distribution
 
-**Question:** How internally consistent is each chunk?
+```
+Chunk 1:  sentence1 ←→ sentence2 ←→ sentence3
+                    all pairs averaged
+```
 
-A well-formed chunk should represent a single, coherent idea. One simple way to assess this is by examining the **chunk length distribution**.
+It embeds every sentence inside the chunk, builds a full similarity matrix of all sentence pairs, and averages the upper triangle.
 
-**Red flags include:**
-- Large variance in chunk sizes
-- Many chunks close to the maximum token limit
-- Many very small or fragmented chunks
+- High score → all sentences in the chunk are about the same topic — the chunk is coherent and focused
+- Low score → sentences inside the chunk are jumping between topics — the chunk is incoherent and will confuse retrieval
 
-These patterns often indicate suboptimal chunking rules.
-
-**Practical adjustments:**
-- If the number of chunks is excessively high → increase `max_tokens` to reduce fragmentation.
-- If the average chunk size is too large → reduce `max_tokens` to maintain LLM compatibility.
-- If chunks feel disconnected → increase overlap to preserve context.
-
-The goal is a balanced distribution: neither too fragmented nor too dense.
 
 
 #### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
 
 
-
-Chunk boundaries should preserve continuity without introducing excessive redundancy.  
-This can be evaluated by measuring **cosine similarity between embeddings of adjacent chunks**.
-
-**What this metric captures well:**
-- Context continuity across chunk boundaries
-- Whether overlap is too weak or too aggressive
-- Whether chunk boundaries align with topic changes
+```
+Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
+         sim1       sim2       sim3
+```
 
 **How to interpret similarity scores:**
 
