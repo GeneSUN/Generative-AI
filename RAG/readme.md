@@ -124,11 +124,28 @@ Rag paper
 - [Blended RAG](https://arxiv.org/pdf/2404.07220)
 
 
+with respect to different topic, there are always related dataset(corpus), or embedding, or
+- GSM8K is a math reasoning benchmark
+- TeleQnA (best telecom QA benchmark), TeleMath (closest to GSM8K for telecom)
+- SQuAD (Wikipedia-based QA)
+- 3GPP technical specifications (BEST telecom corpus)
 
-
-
-
-
+```
+User Query
+    │
+    ├── Vector DB #1 → Telecom corpus
+    │        (3GPP specs, telecom textbooks)
+    │
+    ├── Vector DB #2 → monitoring metrics
+    │       
+    │
+    ├── Vector DB #3 → troubleshooting cases
+    │       
+    │
+    └── Merge retrieved chunks
+             ↓
+           LLM
+```
 
 
 
