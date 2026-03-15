@@ -51,9 +51,29 @@ Chunking is therefore a trade-off between **context completeness** and **retriev
 ---
 
 ## Common Chunking Strategies
+```python
+import requests
 
-- https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089
+script_url = "https://raw.githubusercontent.com/GeneSUN/Generative-AI/main/src/rag/chunk_strategy.py"
+file_name = "chunk_strategy.py"
 
+response = requests.get(script_url)
+response.raise_for_status() # Raise an exception for bad status codes
+
+with open(file_name, "w") as f:
+    f.write(response.text)
+
+print(f"✅ '{file_name}' downloaded successfully.")
+
+from chunk_strategy import TextChunker, SemanticChunker
+
+print("✅ TextChunker and SemanticChunker imported successfully.")
+
+# You can then create instances of these classes, for example:
+# text_chunker = TextChunker()
+# semantic_chunker = SemanticChunker()
+
+```
 
 
 
@@ -223,6 +243,10 @@ Chunk 1 ←→ Chunk 2 ←→ Chunk 3 ←→ Chunk 4
 - If similarity is consistently above ~0.95 → reduce overlap to avoid redundancy.
 - Sharp drops in similarity often indicate topic boundaries, which can be desirable.
 
+
+## Reference
+
+- https://community.databricks.com/t5/technical-blog/the-ultimate-guide-to-chunking-strategies-for-rag-applications/ba-p/113089
 
 
 
