@@ -179,36 +179,28 @@ class SemanticChunker:
     # Semantic chunking
     # ---------------------------
     def chunk(self, text: str) -> List[str]:
+
         sentences = self.split_sentences(text)
         if not sentences:
             return []
-
-        embeddings = self.embedder.embed(sentences)
-
+        
+        embeddings = np.array(self.embedder.embed(sentences))
+        
         chunks = []
         current_chunk = [sentences[0]]
-        current_tokens = self.count_tokens(sentences[0])
-
+        
         for i in range(1, len(sentences)):
             sim = cosine_similarity(
-                embeddings[i - 1].reshape(1, -1),
-                embeddings[i].reshape(1, -1)
+                [embeddings[i-1]],
+                [embeddings[i]]
             )[0][0]
-
-            next_tokens = self.count_tokens(sentences[i])
-
-            # Topic boundary OR token limit
-            if (
-                sim < self.similarity_threshold
-                or (self.max_tokens and current_tokens + next_tokens > self.max_tokens)
-            ):
+        
+            if sim < self.similarity_threshold:
                 chunks.append(" ".join(current_chunk))
                 current_chunk = [sentences[i]]
-                current_tokens = next_tokens
             else:
                 current_chunk.append(sentences[i])
-                current_tokens += next_tokens
-
+        
         chunks.append(" ".join(current_chunk))
         return chunks
 '''
