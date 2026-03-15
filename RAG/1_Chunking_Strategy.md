@@ -99,6 +99,25 @@ The chunking flow follows two steps:
 ### Semantic-based  
 <img width="2128" height="392" alt="Untitled" src="https://github.com/user-attachments/assets/0382df3c-057f-47a5-a039-075686374435" />
 
+### Recursive chunking (very common)
+
+Split order:
+```
+paragraph → sentence → token
+```
+This is exactly what LangChain's RecursiveCharacterTextSplitter does.
+
+### Recursive chunking
+
+```
+Recursive chunking (very common)
+```
+
+### Hierarchical chunking
+
+Multi-level chunks.
+
+
 
 ### *. Overlap Strategy (Boundary Effects)
 
