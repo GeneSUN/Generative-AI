@@ -211,3 +211,45 @@ class SemanticChunker:
 
         chunks.append(" ".join(current_chunk))
         return chunks
+'''
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Initialize splitter
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50,
+    separators=["\n\n", "\n", " ", ""]
+)
+
+# Split text
+texts = text_splitter.split_text(long_document)
+'''
+
+'''
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_openai.embeddings import OpenAIEmbeddings # Or any other embedding model
+
+# Initialize your embedding model
+embeddings = OpenAIEmbeddings()
+
+# Instantiate the SemanticChunker
+# The default breakpoint_threshold_type is "percentile"
+semantic_text_splitter = SemanticChunker(embeddings)
+
+# Split your documents
+chunks = semantic_text_splitter.split_documents(documents)
+'''
+
+'''
+from langchain_text_splitters import TokenTextSplitter
+
+# Initialize with desired token-based chunk size and overlap
+text = "Your long document text goes here..."
+splitter = TokenTextSplitter(chunk_size=100, chunk_overlap=20)
+
+# Create document chunks
+docs = splitter.create_documents([text])
+
+'''
+
+
