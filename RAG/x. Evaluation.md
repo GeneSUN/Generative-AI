@@ -23,6 +23,41 @@ It embeds every sentence inside the chunk, builds a full similarity matrix of al
 - Low score → sentences inside the chunk are jumping between topics — the chunk is incoherent and will confuse retrieval
 
 
+#### Messy Chunk
+
+```
+=======================================================
+Metric                  Min    Mean    Max     Std
+=======================================================
+Chars                     1  2362.0  82215  6078.6
+Words                     1   412.1  14090  1043.0
+Tokens                    1   526.5  18038  1341.5
+
+
+⚠️  Chunks < 50 tokens  : 455
+⚠️  Chunks > 600 tokens : 177
+
+Shortest 3 chunks:
+  [4] 1 tokens | '.'
+  [6] 1 tokens | '.'
+  [8] 1 tokens | '.'
+```
+<img width="1489" height="396" alt="image" src="https://github.com/user-attachments/assets/784c55c0-4de1-467b-862c-c091b686377c" />
+
+
+#### Clean Chunk
+
+```
+=======================================================
+Metric                  Min    Mean    Max     Std
+=======================================================
+Chars                   180  1425.5   2716   841.9
+Words                    32   248.5    499   145.4
+Tokens                   50   317.1    854   188.4
+```
+<img width="1489" height="396" alt="image" src="https://github.com/user-attachments/assets/887b3ad5-3165-48b1-bd25-3e4acb013a7c" />
+
+
 
 ### 2. Inter-Chunk Redundancy: Similarity Between Adjacent Chunks
 
