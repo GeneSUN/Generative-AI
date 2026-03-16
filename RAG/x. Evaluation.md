@@ -83,15 +83,45 @@ Words                    32   248.5    499   145.4
 Tokens                   50   317.1    854   188.4
 ```
 <img width="1489" height="396" alt="image" src="https://github.com/user-attachments/assets/887b3ad5-3165-48b1-bd25-3e4acb013a7c" />
-
-
 <img width="1390" height="789" alt="image" src="https://github.com/user-attachments/assets/82f6b979-700e-497c-a245-aa9006ad8ab0" />
 
+### Post-Process
+
+- Drop junk chunks (< 50 tokens or pure punctuation)
+- Break up monster chunks (> 600 tokens)
+- Re-run the length evaluation to confirm improvement
+
+## Ragas
+
+<img width="739" height="323" alt="Screenshot 2026-03-16 at 8 40 32 AM" src="https://github.com/user-attachments/assets/b148420a-19f6-4d80-adf1-5ddbaac8cf2d" />
+
+### 1. Faithfulness
+
+Faithfulness measures whether the answer is supported by the retrieved context. It detects hallucinations.
+
+```
+question (Where is the Eiffel Tower located?)
+↓
+retrieve context (The Eiffel Tower is located in Paris.)
+↓
+LLM answer (The Eiffel Tower is located in Paris and is the largest city in Europe.)
+
+1. extract claims from answer: 1 Paris is location; 2 Paris is largest city in Europe ✘ unsupported
+2. check if each claim is supported by context
+3. compute ratio (supported_claims / total_claims = 1 / 2 = 0.5)
+```
+
+### 2. Response Relevancy 
+It checks **semantic alignment** between question and answer.
+
+1. LLM reads the answer, Eo 
+2. LLM generates N questions the answer could answer, Egi
+3. Compare those questions with the original question
+
+<img width="366" height="80" alt="Screenshot 2026-03-16 at 8 50 34 AM" src="https://github.com/user-attachments/assets/c06261d2-7372-499d-8d40-cf4e68c66b97" />
 
 
-
-## Retrieval Precision / Recall @ k
-
+### Retrieval Precision @ k
 Question: Are the right chunks being retrieved?
 
 - Precision@k: how many retrieved chunks are actually relevant
@@ -109,153 +139,21 @@ Chunk 6: Skills — "Python, Scala, SQL, Spark, TensorFlow, AWS..."
 
 Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
 
-
-Retrieved = [Chunk 2, Chunk 6, Chunk 4]
-              ✅ relevant  ❌ wrong  ✅ relevant
-Precision@3 = 2/3 = 0.67
-```
-
-**not realistic, because Requires relevance labels (manual or heuristic)**
-
-
-
-### LLM-Based Evaluation (Higher Signal, Higher Cost)
-
-```
-Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
-
 Chunk 2  -LLM→  RELEVANT     (was retrieved ✅)
 Chunk 6  -LLM→  NOT RELEVANT (was retrieved ❌)
 Chunk 4  -LLM→  RELEVANT     (was retrieved ✅)
+Retrieved = [Chunk 2, Chunk 6, Chunk 4]
+         ✅ relevant  ❌ wrong  ✅ relevant
+
+Precision@3 = 2/3 = 0.67
 ```
-
----
-
-### RAGAS
-
-- https://arxiv.org/pdf/2309.15217
-
-**1. What RAGAS measures**
-
-```
-1. faithfulness        — Is the answer grounded in the retrieved context?
-                         (catches hallucination)
-
-2. answer_relevancy    — Does the answer actually address the question?
-                         (catches vague or off-topic answers)
-
-3. context_precision   — Are the retrieved chunks relevant to the question?
-                         (equivalent to Precision@k with LLM judge)
-
-4. context_recall      — Did retrieval find all the information needed?
-                         (equivalent to Recall@k — requires ground truth answer)
-```
-
-**2. RAGAS needs a dataset of:**
-
-```
-{
-    "question":         the question you ask
-    "answer":           what your RAG pipeline actually returned
-    "contexts":         the chunks your retriever returned (list of strings)
-    "ground_truth":     the ideal answer (needed for context_recall only)
-}
-```
-
-```
-question:
-"What machine learning work did this person do at Verizon?"
-
-answer:
-"At Verizon, this person developed ETL pipelines and predictive 
-models for churn prediction and anomaly detection across Wi-Fi 
-and 5G services. They also built a 5G Home Churn prediction model 
-using Time Series Classification methods including CNN, ResNets, 
-and KNN, achieving 78% accuracy. Additionally, they developed a 
-global anomaly detection model using probabilistic time series 
-forecasting for 5G network stations."
-
-contexts: [
-    "Data Scientist, Verizon Contract (09/2023 - Present)
-     Developed ETL pipelines and predictive models for churn 
-     prediction and anomaly detection across Verizon Wi-Fi and 
-     5G services. Delivered scalable solutions using Spark, 
-     forecasting models, and ML/DL techniques.",
-
-    "Wi-Fi and 5G Home Internet Scoring System (Verizon, 2024)
-     Designed scoring systems aggregating KPIs using statistical 
-     and domain expertise. Built an Extender Recommendation Model 
-     with 82% accuracy, 78% precision, 82% recall. Developed 5G 
-     Home Churn model using Time Series Classification 
-     (CNN, ResNets, KNN).",
-
-    "5G Network Station Anomaly Detection (Verizon, 2024)
-     Built a global anomaly detection model using probabilistic 
-     time series forecasting. Enabled early detection of 5G 
-     station anomalies, reducing downtime during 4G to 5G 
-     transition.",
-]
-
-ground_truth:
-"At Verizon, this person developed churn prediction models, 
-anomaly detection for Wi-Fi and 5G stations, and a 5G Home 
-Churn prediction model using Time Series Classification."
-```
-
-**3. Example output:**
-```
-{
-    "faithfulness":      0.92,
-    "answer_relevancy":  0.87,
-    "context_precision": 0.71,
-    "context_recall":    0.65,
-}
-```
-
-**How to interpret each score:**
-```
-faithfulness = 0.92  ✅ Good
-→ 92% of claims in the answers are supported by retrieved chunks.
-  The LLM is not hallucinating much.
-
-answer_relevancy = 0.87  ✅ Good  
-→ Answers are mostly on-topic and address the question directly.
-  Some answers may be slightly verbose or drift off topic.
-
-context_precision = 0.71  ⚠️ Needs work
-→ Only 71% of retrieved chunks were actually useful.
-  29% of what was retrieved was noise — wrong chunks being pulled in.
-  Fix: try smaller chunk size, better embedding model, or hybrid search.
-
-context_recall = 0.65  ❌ Problem
-→ Retriever is only finding 65% of the information needed.
-  It is missing relevant chunks for some questions.
-  Fix: increase k, try MMR retrieval, or check chunk boundaries.
-
-```
-
-```
-question                              faith  ans_rel  ctx_prec  ctx_rec
-"What ML work at Verizon?"            1.00    0.91     0.83      0.80
-"What big data tools?"                0.95    0.88     0.67      0.67
-"Accuracy of Extender model?"         1.00    0.95     1.00      1.00
-"Where was the internship?"           0.75    0.82     0.50      0.50
-"Educational background?"             0.90    0.79     0.67      0.50
-```
-
-
 
 ## Best Practices & Implementation Guidelines
 
-### 0. Define Evaluation Strategy
 
-### 1. Begin with Baseline Testing
 
+### 1. Optimize Chunk Size & Overlap
 Start simple (e.g., **fixed-size chunking** with different **chunk** and **overlap sizes**). Gather metrics to establish a reference point before introducing complexity.
-
-
-### 2. Optimize Chunk Size & Overlap
-
 - General text: 200–500 tokens, 10–20% overlap.
 - Code or very technical content: 100–200 tokens, 15–25% overlap.
 - Narrative content: 500–1000 tokens to preserve context.
@@ -264,3 +162,24 @@ Start simple (e.g., **fixed-size chunking** with different **chunk** and **overl
 ### 3. Add Metadata to Chunks
 Storing metadata (e.g., section title, document type, date) helps with filtering and contextual retrieval.
 
+---
+
+                  ┌───────────────┐
+                  │ Human dataset │
+                  └──────┬────────┘
+                         │
+                         ▼
+                 Gold evaluation
+                         │
+                         ▼
+Synthetic QA dataset ───► Large-scale testing
+                         │
+                         ▼
+                 Continuous evaluation
+                         │
+                         ▼
+                 User logs
+
+### 4. Synthetic QA dataset
+### 5. Human dataset
+### 6. User Feedback
