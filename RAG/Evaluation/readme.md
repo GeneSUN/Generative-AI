@@ -1,28 +1,59 @@
+# RAG Evaluation Overview
+
 ## 2. Two Evaluation Modes
 ### (1) Retrieval Evaluation
-
-Evaluate the documents retrieved before generation.
-
-Goal:
-
-check if the retriever returns the correct context
-
-Typical use:
-
 tuning chunking
-
 tuning embedding models
-
 tuning vector search
+
+metrics:
+- Context Precision
+- Context Recall
+- Context Entities Recall
 
 ### (2) End-to-End RAG Evaluation (Retrieve + Generate)
 
-Evaluate the final answer produced by the LLM using retrieved context.
+metrics:
+- Faithfulness
+- Response Relevancy
+- Correctness
+- Answer Similarity
 
-Metrics include:
+## Ground-Truth vs Reference-Free Evaluation
 
-- Correctness, Does the answer match the expected fact?
-- Faithfulness (Hallucination detection)
+## Ground-Truth vs Reference-Free Evaluation
+
+### Ground-Truth Evaluation
+
+Use a dataset with:
+
+- question
+- reference answer
+
+Metrics:
+
+- Correctness
+- Answer Similarity
+
+---
+
+### Reference-Free Evaluation
+
+No reference answer needed.
+
+Use:
+
+- question
+- retrieved context
+- generated answer
+
+Metrics:
+
+- Faithfulness
+- Context Precision
+- Context Recall
+- Response Relevancy
+
 
 **Correctness/accuracy is rarely used directly in RAG evaluation**
 
@@ -41,5 +72,3 @@ Metrics include:
   This is why we rarely use correctness, the overall metrics, but decomposed metrics.
 
 > Correctness Is Still Used — But Only in Special Cases, such as mathematics. 
-
-### Ground-Truth vs Reference-Free Evaluation
