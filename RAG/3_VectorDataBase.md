@@ -204,4 +204,7 @@ and use the code pbbahree to receive 45% off (valid through Sept. 30, 2024). Tra
 --------------------------------------------------------------------------------
 
 ```
+1. Traditional Database, such as Postgre sql
+2. Unstructured relational database, mongo DB
+3. Speicalized Vector Database, Elastic Search, Redis, Faiss, and Amazon/GCP/Azure
 
