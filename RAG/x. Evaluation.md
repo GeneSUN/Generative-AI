@@ -163,7 +163,7 @@ Start simple (e.g., **fixed-size chunking** with different **chunk** and **overl
 Storing metadata (e.g., section title, document type, date) helps with filtering and contextual retrieval.
 
 ---
-
+```
                   ┌───────────────┐
                   │ Human dataset │
                   └──────┬────────┘
@@ -179,6 +179,7 @@ Synthetic QA dataset ───► Large-scale testing
                          │
                          ▼
                  User logs
+```
 
 ### 4. Synthetic QA dataset
 ### 5. Human dataset
