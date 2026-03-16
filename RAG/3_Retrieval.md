@@ -36,7 +36,13 @@ Then retrieval becomes much better.
 
 
 
-
+| Database        | Native Hybrid (via `as_retriever()`) | Needs BM25Retriever Workaround |
+|-----------------|----------------------------------------|--------------------------------|
+| Pinecone        | ✅ `alpha` param                        | ❌                             |
+| Weaviate        | ✅ `search_type="hybrid"`               | ❌                             |
+| Elasticsearch   | ✅ `hybrid=True`                        | ❌                             |
+| Qdrant          | ✅ `RetrievalMode.HYBRID`               | ❌                             |
+| Redis           | ❌                                     | ✅ required                    |
 
 
 
