@@ -18,7 +18,8 @@ LLMTIME does NOT pre-train or fine-tune an LLM for time series, It transforms ti
 - how the tokenization actually works
 - how outputs are converted back to continuous values
 
-### Fine-tuning pretrained LLMs,
+
+### Fine-tuning pretrained LLMs
 Time-LLM: Time series forecasting by reprogramming large language models
 
 #### Criticize
@@ -28,8 +29,85 @@ Time-LLM: Time series forecasting by reprogramming large language models
   - Poor uncertainty calibration, GPT-4 performs worse than GPT-3
 2. Extremely inefficient, Uses billions of parameters
 
+## Language Modeling Framework - Chronos
 
 
+## Appendix
+
+### Example of Fine-tuning pretrained LLMs
+
+### Example of Prompt Time series
+https://nixtlaverse.nixtla.io/neuralforecast/models.timellm.html
+
+```
+prompt_prefix = "The dataset contains data on monthly air passengers. There is a yearly seasonality"
+
+timellm = TimeLLM(h=12,
+                 input_size=36,
+                 llm='openai-community/gpt2',
+                 prompt_prefix=prompt_prefix,
+                 batch_size=16,
+                 valid_batch_size=16,
+                 windows_batch_size=16)
+
+nf = NeuralForecast(
+    models=[timellm],
+    freq='ME'
+)
+
+```
+
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key="your-api-key")
+
+# --- Step 1: Raw time series data ---
+dates = ["Aug 16", "Aug 17", "Aug 18", "Aug 19", "Aug 20"]
+temps = [78, 81, 83, 84, 84]
+target_date = "Aug 21"
+
+# --- Step 2: Convert to natural language prompt ---
+values_str = ", ".join(str(t) for t in temps)
+
+user_prompt = (
+    f"From {dates[0]} to {dates[-1]}, the average temperature "
+    f"was {values_str} degrees on each day. "
+    f"What is the temperature going to be on {target_date}? "
+    f"Reply only in this format: 'The temperature will be X degree.'"
+)
+
+# --- Step 3: Call OpenAI ---
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {
+            "role": "system",
+            "content": (
+                "You are a time series forecasting assistant. "
+                "Given historical data as a sentence, predict the next value. "
+                "Always respond in the format: 'The temperature will be X degree.'"
+            )
+        },
+        {
+            "role": "user",
+            "content": user_prompt
+        }
+    ],
+    temperature=0  # deterministic output for forecasting
+)
+
+prediction = response.choices[0].message.content
+print("Prediction:", prediction)
+# → "The temperature will be 82 degree."
+
+# --- Step 4: Parse the number out if needed ---
+import re
+match = re.search(r"[\d.]+", prediction)
+predicted_value = float(match.group()) if match else None
+print("Parsed value:", predicted_value)  # → 82.0
+```
 
 
 
