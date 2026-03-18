@@ -1,5 +1,12 @@
 
 ## 1. Adapts language models, T5
+
+
+| T5 Model | Chronos Model |
+|----------|---------------|
+| <img src="https://github.com/user-attachments/assets/3fde34c5-3fa4-4a18-b130-03c715eb080e" width="400"/> | <img src="https://github.com/user-attachments/assets/13f9238c-11ff-4cb0-9209-602a6220929c" width="400"/> |
+
+
 ## 2. Tokenize input time series: 
 
 Mapping the observations xi ∈R to a finite set of tokens, convert regression to classification
@@ -43,7 +50,7 @@ P(bin 5 | bin 2) = 0.2
 
 ## 4. Forecasting
 
-###  Autoregressive sampling generates one future trajectory
+###  4.1. Autoregressive sampling generates one future trajectory
 
 1. [2, 3, 3] -> sample P(next token |[2, 3, 3] ) -> 4
 2. [2, 3, 3, 4] -> sample P(next token |[2, 3, 3, 4] ) -> 4
@@ -51,7 +58,7 @@ P(bin 5 | bin 2) = 0.2
 4. final series [2, 3, 3, **4, 4, 5**]
 
 
-### Repeating sampling produces multiple realizations (possible futures)
+### 4.2. Repeating sampling produces multiple realizations (possible futures)
 
 Run 1 → [2, 3, 3, 4,5,4]
 Run 2 → [2, 3, 3, 3,4,4]
@@ -59,7 +66,9 @@ Run 3 → [2, 3, 3, 4,4,5]
 ...
 
 
-### Aggregating these realizations approximates the predictive distribution
+### 4.3. Aggregating these realizations approximates the predictive distribution
+
+<img width="1087" height="163" alt="Screenshot 2026-03-17 at 6 59 26 PM" src="https://github.com/user-attachments/assets/29072cfd-ce30-409d-a984-a9e28db50b01" />
 
 
 ## Data Augmentation
