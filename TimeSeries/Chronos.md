@@ -1,4 +1,16 @@
 
+## Table of Contents
+
+1. [Adapts Language Models (T5)](#1-adapts-language-models-t5)
+2. [Tokenization of Time Series](#2-tokenize-input-time-series)
+3. [Objective Function](#3-objective-function)
+4. [Data Augmentation](#data-augmentation)
+5. [Forecasting](#4-forecasting)
+   - [Autoregressive Sampling](#41-autoregressive-sampling-generates-one-future-trajectory)
+   - [Multiple Realizations](#42-repeating-sampling-produces-multiple-realizations-possible-futures)
+   - [Predictive Distribution](#43-aggregating-these-realizations-approximates-the-predictive-distribution)
+6. [Summary: When to Use Chronos](#summary)
+
 ## 1. Adapts language models, T5
 
 
@@ -48,6 +60,12 @@ P(bin 4 | bin 2) = 0.3
 P(bin 5 | bin 2) = 0.2 
 ```
 
+
+## *Data Augmentation
+1. Synthesis Data
+2. Augmented Data
+3. Diverse Real Data
+
 ## 4. Forecasting
 
 ###  4.1. Autoregressive sampling generates one future trajectory
@@ -68,13 +86,19 @@ Run 3 → [2, 3, 3, 4,4,5]
 
 ### 4.3. Aggregating these realizations approximates the predictive distribution
 
-<img width="1087" height="163" alt="Screenshot 2026-03-17 at 6 59 26 PM" src="https://github.com/user-attachments/assets/29072cfd-ce30-409d-a984-a9e28db50b01" />
+```python
+forecast_samples = pipeline.predict(
+    context,
+    prediction_length=prediction_length,
+    **num_samples**=200,         # default=20 in the paper; 100-500 for better quantiles
+    temperature=1.0,         # higher = more spread; lower = more conservative
+    top_k=50,                # controls sampling diversity (paper used vocab_size for wider intervals)
+    top_p=1.0,
+)
+```
 
+<img width="628" height="1387" alt="image" src="https://github.com/user-attachments/assets/95b4f09e-e400-4536-b475-781ddd507b7c" />
 
-## Data Augmentation
-1. Synthesis Data
-2. Augmented Data
-3. Diverse Real Data
 
 ## Summary
 
