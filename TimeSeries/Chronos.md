@@ -110,7 +110,7 @@ Chronos is a good choice when:
 
 Chronos is a bad or weaker choice when:
 1. **Exogenous or calendar** features matter a lot in the original Chronos setup. The paper says Chronos ignores explicit time and frequency features and treats the series simply as a sequence. So if holidays, promotions, weather, interventions, or known future covariates drive the outcome, original Chronos is a weaker fit. Newer follow-up work like **ChronosX** and **Chronos-2** adds covariate support
-2. The series has patterns that clash with the tokenization/scaling design, especially:
+2. The series has patterns that clash with the **tokenization/scaling** design, especially:
     - sparse series with spikes or extreme outliers, where values can fall outside the representable range after scaling;
     - high-magnitude, low-variance series, where nearby values collapse into the same token and precision is lost.
 3. The series has complicated pattern: **strong exponential trend** and **long-term seasonality**
