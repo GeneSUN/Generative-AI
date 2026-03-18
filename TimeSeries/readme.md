@@ -8,6 +8,15 @@
 - [RATFM: Retrieval-augmented Time Serie Foundation Model for Anomaly Detection](https://arxiv.org/pdf/2506.02081)  (weak)
 - [OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?](https://openreview.net/forum?id=M4qNIzQYpd)
 
+- https://github.com/thuml/Time-Series-Library
+
+
+## Time-Series-Anomaly-Detection: TSAD
+
+Two major challenge of TSAD:
+1. Model heterogeneity/Dataset-dependent
+2. Interpretatibility
+
 ## LLM-based forecasters
 
 ### LLM Prompt Engineering
