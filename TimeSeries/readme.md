@@ -10,16 +10,45 @@
 
 - https://github.com/thuml/Time-Series-Library
 
+  ```
+                                      --- Text-Transformer --- chronos
+  -- think time series as sentence ---        --- Prompt
+                                      --- Text-LLM
+                                              --- fine-tuning/change embedding
 
-## Time-Series-Anomaly-Detection: TSAD
+                                       --- image-Transformer --- TimesNet
+  -- think time series as 2D-figure ---
+                                       --- image-multi-modal LLM --- (Time series Anomaly Multimodal Analyzer)TAMA
+  ```
+
+---
+
+## Image
+
+### Image-Transformer : 
+
+- TIMESNET: TEMPORAL 2D-VARIATION MODELING FOR GENERAL TIME SERIES ANALYSIS
+
+### image-multi-modal LLM 
+
+- See it, Think it, Sorted: Large Multimodal Models are Few-shot Time Series Anomaly Analyzers
+- Can Multimodal LLMs Perform Time Series Anomaly Detection?
 
 Two major challenge of TSAD:
 1. Model heterogeneity/Dataset-dependent
 2. Interpretatibility
 
-## LLM-based forecasters
+---
 
-### LLM Prompt Engineering
+## Text
+
+### Text-Transformer: Chronos
+
+---
+
+### Text-LLM forecasters
+
+#### LLM Prompt Engineering
 - [Large language models can be zero-shot anomaly detectors for time series?](https://arxiv.org/pdf/2405.14755v3)
 - PromptCast: A New Prompt-based Learning Paradigm for Time Series Forecasting
 
@@ -28,7 +57,7 @@ LLMTIME does NOT pre-train or fine-tune an LLM for time series, It transforms ti
 - how outputs are converted back to continuous values
 
 
-### Fine-tuning pretrained LLMs
+#### Fine-tuning pretrained LLMs
 Time-LLM: Time series forecasting by reprogramming large language models
 
 #### Criticize
@@ -38,7 +67,7 @@ Time-LLM: Time series forecasting by reprogramming large language models
   - Poor uncertainty calibration, GPT-4 performs worse than GPT-3
 2. Extremely inefficient, Uses billions of parameters
 
-## Language Modeling Framework - Chronos
+---
 
 
 ## Appendix
