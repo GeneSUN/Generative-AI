@@ -10,6 +10,9 @@
 
 - https://github.com/thuml/Time-Series-Library
 
+
+- https://colab.research.google.com/drive/1PpGaOkm81ceO38s5uzlPeeTv0wlsXw2_
+
   ```
                                       --- Text-Transformer --- chronos
   -- think time series as sentence ---        --- Prompt
