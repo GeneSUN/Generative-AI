@@ -20,5 +20,9 @@ Agent = LLM + Tools + Loop
   ```# Use comments sparingly. Only comment complex code.```
 4. File Mentions with '@'
    - Referencing Files in CLAUDE.md
+  
+## Hooks
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/529a6876-ba15-4387-be77-efee6f8a42b3" />
+
 
 
