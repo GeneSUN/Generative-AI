@@ -10,3 +10,13 @@ Agent = LLM + Tools + Loop
 3. This is exactly why agents and RAG exist — to extend the LLM by feeding it relevant tools/information on demand, rather than baking everything in upfront.
 4. The LLM doesn't just use tools — it decides which tool to use and when. This autonomy is what separates an agent from a simple API call.
 5. The loop is essential. Each tool result becomes new context that the LLM reasons over, potentially triggering more tool calls.
+  - Referencing Files in CLAUDE.md
+
+
+
+1. start with ```./``` to scan the entire code base
+2. run the /init command. 
+3. Use the # command to enter "memory mode" - this lets you edit your CLAUDE.md files intelligently. Just type something like:
+4. File Mentions with '@'
+
+# Use comments sparingly. Only comment complex code.
