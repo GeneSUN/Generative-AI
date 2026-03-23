@@ -12,11 +12,13 @@ Agent = LLM + Tools + Loop
 5. The loop is essential. Each tool result becomes new context that the LLM reasons over, potentially triggering more tool calls.
   - Referencing Files in CLAUDE.md
 
-
+## Adding context
 
 1. start with ```./``` to scan the entire code base
 2. run the /init command. 
 3. Use the # command to enter "memory mode" - this lets you edit your CLAUDE.md files intelligently. Just type something like:
+  ```# Use comments sparingly. Only comment complex code.```
 4. File Mentions with '@'
+   - Referencing Files in CLAUDE.md
 
-# Use comments sparingly. Only comment complex code.
+
