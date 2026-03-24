@@ -2,6 +2,13 @@
 
 [Define success criteria and build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
 
+1. tell the story use "STAR": 
+- situation as system prompt, 
+- Task include main question, and few-shot examples
+- Action may give guidance of specific direction, or provide tools as agent
+- Result specify what type of reponse, such as number, image, text, or probability; also include output formation
+2. Refine with LLM,  [claude workbench](https://platform.claude.com/workbench/4ad89ea2-aa38-410d-86b3-563ccecaa68f?tab=prompt)
+3. Evaluation
 
 # Prompt Evaluation: A Machine Learning Perspective
 
