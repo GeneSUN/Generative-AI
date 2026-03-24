@@ -1,2 +1,0 @@
-## Claude Models
-Claude Opus
