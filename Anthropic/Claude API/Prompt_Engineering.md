@@ -124,8 +124,9 @@ This removes guesswork. You're making decisions from numbers, not intuition.
 ## Two Major Challenges:
 
 1. Build test dataset
+- LLM as generator
 2. Define Success crtiria or Metrics
-- Q&A rarely measure correctness between reference answer and predicted answer
-- Depend on each project
-- Some common task has standard metrcs, RAG use RAGAS
-
+- Rarely measure correctness between reference answer and predicted answer, such as Q&A
+- LLM as judge is risky
+- Depend on each project. Some common task has standard metrcs, RAG use RAGAS
+- Decompose the overall metrics into different critieria: Format, Valid Syntax
