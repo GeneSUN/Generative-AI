@@ -2,18 +2,26 @@
 
 [Define success criteria and build evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
 
+## Tips:
+
 1. tell the story use "STAR": 
-- situation as system prompt, 
-- Task include main question, and few-shot examples
-- Action may give guidance of specific direction, or provide tools as agent
-- Result specify what type of reponse, such as number, image, text, or probability; also include output formation
-2. Refine with LLM,  [claude workbench](https://platform.claude.com/workbench/4ad89ea2-aa38-410d-86b3-563ccecaa68f?tab=prompt)
+    - situation as system prompt, 
+    - Task include main question, and few-shot examples
+    - Action may give guidance of specific direction, or provide tools as agent
+    - Result specify what type of reponse, such as number, image, text, or probability; also include output formation
+2. Refine with LLM,  
+    - [claude workbench](https://platform.claude.com/workbench/4ad89ea2-aa38-410d-86b3-563ccecaa68f?tab=prompt)
+    - XML tags
+    - Few-shots
+    - Chain of thoughts
 3. Evaluation
 
 # Prompt Evaluation: A Machine Learning Perspective
 
+## Comparison between Classical ML Pipeline and LLM
+
 <details>
-<summary>## Comparison between Classical ML Pipeline and LLM</summary>
+<summary>Details</summary>
 
 ### Starting Point: The Classical ML Pipeline
 
@@ -66,6 +74,9 @@ Tools like **DSPy** even automate this search — the same way **Optuna** or **G
 
 ### Step 1 — Build a Test Dataset
 
+<details>
+<summary>Details</summary>
+
 Before comparing prompt variants, you need a held-out test set. Each record contains:
 
 - **Input (X):** the user question
@@ -79,7 +90,12 @@ eval_dataset = [
 ]
 ```
 
+</details>
+
 ### Step 2 — Generate Predictions
+
+<details>
+<summary>Details</summary>
 
 Feed the test set through each prompt variant to collect predicted responses (ŷ):
 
@@ -90,7 +106,12 @@ prompt_v2(question) → Claude → response_v2
 
 Now for each record you have: **reference answer** and **predicted answer** — the same setup as classical model evaluation.
 
+</details>
+
 ### Step 3 — Calculate Metrics
+
+<details>
+<summary>Details</summary>
 
 This is where LLM evaluation diverges from classical ML.
 
@@ -114,7 +135,12 @@ In LLM evaluation, the metric computation itself involves a model — introducin
 
 > ⚠️ **Important caveat:** Unlike MSE which always returns the same value, LLM-as-a-judge is stochastic — the same response graded twice may get different scores. The grader also has its own biases (e.g. preferring longer answers). This means you need **multiple grading runs and averaging** to get stable scores — making LLM evaluation fundamentally noisier than classical evaluation.
 
+</details>
+
 ### Step 4 — Compare and Decide
+
+<details>
+<summary>Details</summary>
 
 Assign a score to each prompt variant, then pick the best:
 
@@ -126,14 +152,20 @@ prompt_v3 → avg score: 8.70 / 10  ← best → ship this
 
 This removes guesswork. You're making decisions from numbers, not intuition.
 
+</details>
+
 ---
 
-## Two Major Challenges:
+## Two Major Challenges
 
-1. Build test dataset
-- LLM as generator
-2. Define Success crtiria or Metrics
-- Rarely measure correctness between reference answer and predicted answer, such as Q&A
-- LLM as judge is risky
-- Depend on each project. Some common task has standard metrcs, RAG use RAGAS
-- Decompose the overall metrics into different critieria: Format, Valid Syntax
+**1. Building a Test Dataset**
+- Curating high-quality (input, reference answer) pairs is labor-intensive
+- LLMs can be used as generators to bootstrap the dataset, but outputs still require human review to avoid noise
+
+**2. Defining Success Criteria and Metrics**
+- Direct answer-matching (e.g. exact match, F1) only applies in narrow cases like factual Q&A; most real tasks require judgment
+- LLM-as-a-judge is scalable but introduces its own biases — same response can score differently across runs
+
+Common Solutions:
+- The right metric is project-specific: RAG pipelines have RAGAS, code generation uses unit tests, open-ended tasks need rubrics
+- Complex tasks benefit from decomposing the overall metric into sub-criteria (e.g. format compliance, syntactic validity, factual accuracy) and scoring each independently
