@@ -2,7 +2,10 @@
 
 ## 1. Creating a Message
 
-<img src="image-2.png" width="55%">
+<details>
+<summary>Click to expand</summary>
+
+<img src="image-2.png" width="75%">
 
 The core request requires three parameters:
 
@@ -12,9 +15,14 @@ The core request requires three parameters:
 | `max_tokens` | Upper limit on response length — a safety cap, not a target |
 | `messages` | The conversation history sent to Claude |
 
+</details>
+
 ---
 
 ## 2. Multi-Turn Conversations
+
+<details>
+<summary>Click to expand</summary>
 
 <img src="image-3.png" width="55%">
 
@@ -35,17 +43,68 @@ messages = [
 
 > **Note — Memory:** Claude has no persistent memory across API calls. The full conversation history must be passed with every request to maintain context.
 
+### Raw API
+```python
+def add_user_message(messages, text):
+    user_message = {"role": "user", "content": text}
+    messages.append(user_message)
+
+def add_assistant_message(messages, text):
+    assistant_message = {"role": "assistant", "content": text}
+    messages.append(assistant_message)
+
+def chat(messages):
+    message = client.messages.create(
+        model=model,
+        max_tokens=1000,
+        messages=messages,
+    )
+    return message.content[0].text
+
+# Start with an empty message list
+messages = []
+
+# Add the initial user question
+add_user_message(messages, "Define quantum computing in one sentence")
+
+# Get Claude's response
+answer = chat(messages)
+
+# Add Claude's response to the conversation history
+add_assistant_message(messages, answer)
+
+# Add a follow-up question
+add_user_message(messages, "Write another sentence")
+
+# Get the follow-up response with full context
+final_answer = chat(messages)
+
+```
+
+
+
+
+</details>
+
 ---
 
 ## 3. System Prompts
+
+<details>
+<summary>Click to expand</summary>
 
 <img src="image-4.png" width="55%">
 
 System prompts set Claude's behavior, persona, or constraints before the conversation begins. They are separate from the `messages` array and apply globally to the entire session.
 
+</details>
+
 ---
 
 ## 4. Structured Responses (JSON)
+
+<details>
+<summary>Click to expand</summary>
 
 By default, Claude wraps JSON output in markdown fencing and may include explanatory text:
 
@@ -66,6 +125,8 @@ The JSON is valid, but the markdown formatting and surrounding text make it diff
 | Method | Mechanism | Reliability | Effort |
 |:---|:---|:---:|:---:|
 | Prompt only | Instruct Claude to return raw JSON with no backticks | Medium — usually works, occasionally adds text | Lowest |
-| Prefill + stop sequence | Prefill ` ```json `, stop at ` ``` ` | High | Low |
+| Prefill + stop sequence | Prefill ` ```json `, stop at ` ``` `(Backtick) | High | Low |
 | Post-process with regex | Let Claude respond freely; extract `{...}` via regex | Medium — brittle on edge cases | Low |
 | Tool schema | Define a tool whose input schema is your JSON shape | Highest — structurally enforced, invalid JSON impossible | High |
+
+</details>
