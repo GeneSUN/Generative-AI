@@ -10,7 +10,7 @@ Anthropic offers three Claude model tiers, each balancing intelligence, cost, an
 | **Best for** | Complex, demanding tasks | General-purpose use | Fast, lightweight tasks |
 | | ← More intelligent | | More efficient → |
 
-![alt text](image-1.png)
+![alt text](assets/image-1.png)
 
 
 

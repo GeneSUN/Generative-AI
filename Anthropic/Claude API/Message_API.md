@@ -5,7 +5,7 @@
 <details>
 <summary>Click to expand</summary>
 
-<img src="image-2.png" width="75%">
+<img src="assets/image-2.png" width="75%">
 
 The core request requires three parameters:
 
@@ -24,7 +24,7 @@ The core request requires three parameters:
 <details>
 <summary>Click to expand</summary>
 
-<img src="image-3.png" width="55%">
+<img src="assets/image-3.png" width="55%">
 
 A conversation is a list of message objects passed back and forth. Each turn, one party appends a new dictionary to the list.
 
@@ -93,7 +93,7 @@ final_answer = chat(messages)
 <details>
 <summary>Click to expand</summary>
 
-<img src="image-4.png" width="55%">
+<img src="assets/image-4.png" width="55%">
 
 System prompts set Claude's behavior, persona, or constraints before the conversation begins. They are separate from the `messages` array and apply globally to the entire session.
 
