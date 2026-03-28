@@ -1,96 +1,4 @@
 
-## Ragas
-
-### 1. Faithfulness
-
-<details>
-
-Faithfulness measures whether the answer is supported by the retrieved context. It detects hallucinations.
-
-```
-question (Where is the Eiffel Tower located?)
-↓
-retrieve context (The Eiffel Tower is located in Paris.)
-↓
-LLM answer (The Eiffel Tower is located in Paris and is the largest city in Europe.)
-
-1. extract claims from answer: 1 Paris is location; 2 Paris is largest city in Europe ✘ unsupported
-2. check if each claim is supported by context
-3. compute ratio (supported_claims / total_claims = 1 / 2 = 0.5)
-```
-
-</details>
-
-### 2. Response Relevancy 
-
-<details>
-
-It checks **semantic alignment** between question and answer.
-
-1. LLM reads the answer, Eo 
-2. LLM generates N questions the answer could answer, Egi
-3. Compare those questions with the original question
-
-<img width="366" height="80" alt="Screenshot 2026-03-16 at 8 50 34 AM" src="https://github.com/user-attachments/assets/c06261d2-7372-499d-8d40-cf4e68c66b97" />
-
-</details>
-
-### 3. Retrieval Precision @ k
-
-<details>
-
-Question: Are the right chunks being retrieved?
-
-- Precision@k: how many retrieved chunks are actually relevant
-- Recall@k: whether relevant chunks appear in the top-k results
-
-```
-Imagine your resume is split into 6 chunks:
-
-Chunk 1: Summary — "Data Scientist with expertise in Fraud Detection..."
-Chunk 2: Verizon experience — "Developed ETL pipelines, churn prediction..."
-Chunk 3: Walmart experience — "Conducted Causal Inference, self-checkout ads..."
-Chunk 4: Wi-Fi/5G scoring project — "Designed scoring systems, 82% accuracy..."
-Chunk 5: Anomaly detection project — "Built global anomaly detection model..."
-Chunk 6: Skills — "Python, Scala, SQL, Spark, TensorFlow, AWS..."
-
-Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
-
-Chunk 2  -LLM→  RELEVANT     (was retrieved ✅)
-Chunk 6  -LLM→  NOT RELEVANT (was retrieved ❌)
-Chunk 4  -LLM→  RELEVANT     (was retrieved ✅)
-Retrieved = [Chunk 2, Chunk 6, Chunk 4]
-         ✅ relevant  ❌ wrong  ✅ relevant
-
-Precision@3 = 2/3 = 0.67
-```
-
-</details>
-
-### 4. Retrieval Recall @ k
-
-
-## Best Practices & Implementation Guidelines: The Evaluation Pipeline
-
-### Step 1 — Build a Test Dataset (Synthetic QA dataset/Human dataset)
-
-### Step 2 — Generate Predictions
-
-### Step 3 — Calculate Metrics, Compare and Decide
-
-### Step *. Collect, User Feedback
-
-For example, wifi-Score can do:
-- Diagnosis	“Why is my Wi-Fi score low?”
-- Metric explanation	“What does SNR mean?”
-- Recommendation	“How can I improve my Wi-Fi?”
-
-when evaluate user feedback, I found Recommendation is really bad, because failure case is really diverse, and a lot of case, there is no Recommendation history.
-
----
-
-
-
 ## Evaluating Chunking Quality
 
 Chunking is a design decision, and like any design decision, it must be evaluated.  
@@ -186,5 +94,122 @@ Tokens                   50   317.1    854   188.4
 - Re-run the length evaluation to confirm improvement
 
 </details>
+
+---
+
+
+## Ragas
+
+   <details> <summary> Correctness/accuracy is rarely used directly in RAG evaluation </summary>
+
+
+
+Creating Ground Truth Is Extremely Expensive
+
+ground-truth answers are usually unavailable, ambiguous, for example, i would ask "how to become a data scientist"; you would end up with all kinds of answer, It is hard to define “wrong answer” problems,
+
+RAG Evaluation Is Usually Decomposed Assume now, you find one answer "you need to practice coding to become a data scientist", and you regard this a wrong answer.
+
+However, why it come up with this answer? it could be
+
+Retriever failure
+Hallucination
+Missing context
+This is why we rarely use correctness, the overall metrics, but decomposed metrics.
+
+Correctness Is Still Used — But Only in Special Cases, such as mathematics.
+
+</details>
+
+### 1. Faithfulness
+
+<details>
+
+Faithfulness measures whether the answer is supported by the retrieved context. It detects hallucinations.
+
+```
+question (Where is the Eiffel Tower located?)
+↓
+retrieve context (The Eiffel Tower is located in Paris.)
+↓
+LLM answer (The Eiffel Tower is located in Paris and is the largest city in Europe.)
+
+1. extract claims from answer: 1 Paris is location; 2 Paris is largest city in Europe ✘ unsupported
+2. check if each claim is supported by context
+3. compute ratio (supported_claims / total_claims = 1 / 2 = 0.5)
+```
+
+</details>
+
+### 2. Response Relevancy 
+
+<details>
+
+It checks **semantic alignment** between question and answer.
+
+1. LLM reads the answer, Eo 
+2. LLM generates N questions the answer could answer, Egi
+3. Compare those questions with the original question
+
+<img width="366" height="80" alt="Screenshot 2026-03-16 at 8 50 34 AM" src="https://github.com/user-attachments/assets/c06261d2-7372-499d-8d40-cf4e68c66b97" />
+
+</details>
+
+### 3. Retrieval Precision @ k
+
+<details>
+
+Question: Are the right chunks being retrieved?
+
+- Precision@k: how many retrieved chunks are actually relevant
+- Recall@k: whether relevant chunks appear in the top-k results
+
+```
+Imagine your resume is split into 6 chunks:
+
+Chunk 1: Summary — "Data Scientist with expertise in Fraud Detection..."
+Chunk 2: Verizon experience — "Developed ETL pipelines, churn prediction..."
+Chunk 3: Walmart experience — "Conducted Causal Inference, self-checkout ads..."
+Chunk 4: Wi-Fi/5G scoring project — "Designed scoring systems, 82% accuracy..."
+Chunk 5: Anomaly detection project — "Built global anomaly detection model..."
+Chunk 6: Skills — "Python, Scala, SQL, Spark, TensorFlow, AWS..."
+
+Relevant = {Chunk 2, Chunk 4, Chunk 5}   ← all Verizon-related ML work
+
+Chunk 2  -LLM→  RELEVANT     (was retrieved ✅)
+Chunk 6  -LLM→  NOT RELEVANT (was retrieved ❌)
+Chunk 4  -LLM→  RELEVANT     (was retrieved ✅)
+Retrieved = [Chunk 2, Chunk 6, Chunk 4]
+         ✅ relevant  ❌ wrong  ✅ relevant
+
+Precision@3 = 2/3 = 0.67
+```
+
+</details>
+
+### 4. Retrieval Recall @ k
+
+---
+
+## Best Practices & Implementation Guidelines: The Evaluation Pipeline
+
+### Step 1 — Build a Test Dataset (Synthetic QA dataset/Human dataset)
+
+### Step 2 — Generate Predictions
+
+### Step 3 — Calculate Metrics, Compare and Decide
+
+### Step *. Collect, User Feedback
+
+For example, wifi-Score can do:
+- Diagnosis	“Why is my Wi-Fi score low?”
+- Metric explanation	“What does SNR mean?”
+- Recommendation	“How can I improve my Wi-Fi?”
+
+when evaluate user feedback, I found Recommendation is really bad, because failure case is really diverse, and a lot of case, there is no Recommendation history.
+
+---
+
+
 
 
