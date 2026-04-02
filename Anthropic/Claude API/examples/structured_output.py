@@ -121,7 +121,7 @@ def method_3_extract():
 def method_4_tool_schema():
     # Define a fake tool whose parameters match the JSON shape you want
     tool_schema = {
-        "name": "output_eventbridge_rule",
+        "name": "output_rule",
         "description": "Output an EventBridge rule in structured format.",
         "input_schema": {
             "type": "object",
@@ -149,7 +149,7 @@ def method_4_tool_schema():
         model    = MODEL,
         max_tokens = 300,
         tools    = [tool_schema],
-        tool_choice = {"type": "tool", "name": "output_eventbridge_rule"},
+        tool_choice = {"type": "tool", "name": "output_rule"},
         messages = [{"role": "user", "content": QUESTION}]
     )
 
