@@ -160,6 +160,34 @@ def method_4_tool_schema():
 
     return None
 
+# ══════════════════════════════════════════════════════════════════════════════
+#  langchain version
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+from langchain_anthropic import ChatAnthropic
+from langchain_core.tools import tool
+from pydantic import BaseModel, Field
+
+# ── 1. Define the output shape as a Pydantic model ──────────────────────────
+class EventBridgeRule(BaseModel):
+    source: list[str]       = Field(description="AWS service source, e.g. aws.ec2")
+    detail_type: list[str]  = Field(description="Event detail type", alias="detail-type")
+    detail: dict            = Field(description="Event detail filters")
+
+# ── 2. Create the model and bind the schema as a tool ───────────────────────
+llm = ChatAnthropic(model="claude-sonnet-4-20250514")
+
+structured_llm = llm.with_structured_output(EventBridgeRule)
+
+# ── 3. Invoke ────────────────────────────────────────────────────────────────
+result = structured_llm.invoke(QUESTION)
+
+# result is already an EventBridgeRule object — access fields directly
+print(result.source)
+print(result.detail)
+
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  Run all four and compare
