@@ -6,14 +6,12 @@
 - https://colab.research.google.com/drive/1PpGaOkm81ceO38s5uzlPeeTv0wlsXw2_
 
   ```
-                                      --- Text-Transformer --- chronos
-  -- think time series as sentence ---        --- Prompt
-                                      --- Text-LLM
-                                              --- fine-tuning/change embedding
+  think time series as sentence ──┬── Text-Transformer ──────────────── Chronos/TimeGPT
+                                  └── Text-LLM ────────┬── Prompt Engineering
+                                                       └── Fine-tuning / Change Embedding
 
-                                       --- image-Transformer --- TimesNet
-  -- think time series as 2D-figure ---
-                                       --- image-multi-modal LLM --- (Time series Anomaly Multimodal Analyzer)TAMA
+  think time series as 2D-figure ─┬── Image-Transformer ─────────────── TimesNet
+                                  └── Image-Multimodal LLM ────────────── TAMA
   ```
 
 ---
@@ -26,17 +24,17 @@
   
 - TIMESNET: TEMPORAL 2D-VARIATION MODELING FOR GENERAL TIME SERIES ANALYSIS
 
-1. The model discovers multiple **periodic** patterns (not strictly frequency-domain features).
+1. The model discovers multiple **periodic** patterns via FFT (not strictly frequency-domain features) — real-world signals often have several overlapping periodicities simultaneously.
 
 2. For each period, it reshapes the 1D time series into a 2D tensor,
-   where one axis represents intra-period variation and the other represents inter-period variation.
+   where one axis represents intra-period variation (the shape within one cycle) and the other represents inter-period variation (how the same phase compares across cycles).
 
 3. This 2D representation is then processed like an image using CNN
    (specifically inception-style convolution blocks) to extract temporal patterns and perform forecasting.
 
 <img width="1173" height="369" alt="image" src="https://github.com/user-attachments/assets/1b032e1d-a7f5-417b-ab3d-d2eb3964c60d" />
 
-Apply CNN-Inception to different frequency
+Applying CNN-Inception blocks across different frequencies
 
 <img width="1144" height="427" alt="image" src="https://github.com/user-attachments/assets/241900af-e349-48a3-832d-75229c588868" />
 
@@ -50,9 +48,11 @@ Apply CNN-Inception to different frequency
 - See it, Think it, Sorted: Large Multimodal Models are Few-shot Time Series Anomaly Analyzers
 - Can Multimodal LLMs Perform Time Series Anomaly Detection?
 
-Two major challenge of TSAD:
-1. Model heterogeneity/Dataset-dependent
-2. Interpretatibility
+Core idea: render time series as line charts and feed them into a multimodal LLM, which detects anomalies and generates a natural language explanation of *why*.
+
+Two major challenges in TSAD:
+1. **Model heterogeneity / dataset-dependence** — traditional detectors must be retrained for each domain; a multimodal LLM can transfer across domains with only a few in-context examples.
+2. **Interpretability** — conventional detectors output a score or binary label with no explanation; multimodal LLMs produce a human-readable diagnosis alongside the detection result.
 
 </details>
 
@@ -65,6 +65,7 @@ Two major challenge of TSAD:
 ### Text-Transformer: Chronos
 
 - https://github.com/GeneSUN/Generative-AI/blob/main/TimeSeries/Chronos.md
+- https://www.nixtla.io/docs/introduction/why_timegpt
 
 
 ### Text-LLM forecasters
@@ -76,21 +77,21 @@ Two major challenge of TSAD:
 - [Large language models can be zero-shot anomaly detectors for time series?](https://arxiv.org/pdf/2405.14755v3)
 - PromptCast: A New Prompt-based Learning Paradigm for Time Series Forecasting
 
-LLMTIME does NOT pre-train or fine-tune an LLM for time series, It transforms time series → tokens → feeds into a general LLM → gets result
-- how the tokenization actually works
-- how outputs are converted back to continuous values
+LLMTIME does NOT pre-train or fine-tune an LLM on time series data. Instead, it transforms time series into tokens, feeds them into a general-purpose LLM, and extracts the result.
+- **How tokenization works**: values are rescaled and serialized as plain-text decimal strings; each digit becomes a separate token, so scaling and precision choices are critical.
+- **How outputs are converted back**: the LLM's token probability distribution over digits is decoded and parsed back into a scalar.
 
 
 
 #### Fine-tuning pretrained LLMs
-Time-LLM: Time series forecasting by reprogramming large language models
+**Time-LLM**: Time series forecasting by reprogramming large language models — learns a lightweight reprogramming layer that translates time series patches into text-like tokens, while keeping the LLM backbone frozen.
 
-#### Criticize
-1. No real gain over simple models,
-  - Some studies show LLMs don’t meaningfully improve forecasting
-  - Weak evidence LLM “understands” time series
-  - Poor uncertainty calibration, GPT-4 performs worse than GPT-3
-2. Extremely inefficient, Uses billions of parameters
+#### Criticism
+1. **No real gain over simple models**
+  - Well-tuned linear models (e.g., DLinear) often match or outperform LLM-based forecasters on standard benchmarks
+  - Weak evidence that LLMs truly "understand" time series — shuffling the numeric serialization barely degrades performance
+  - Poor uncertainty calibration — GPT-4 even performs worse than GPT-3 on some benchmarks
+2. **Extremely inefficient** — uses billions of parameters for a regression task that a lightweight model handles comparably
 
 </details>
 
@@ -188,14 +189,3 @@ print("Parsed value:", predicted_value)  # → 82.0
 - [Anomaly Detection of Tabular Data Using LLMs](https://arxiv.org/pdf/2406.16308)
 - [RATFM: Retrieval-augmented Time Serie Foundation Model for Anomaly Detection](https://arxiv.org/pdf/2506.02081)  (weak)
 - [OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?](https://openreview.net/forum?id=M4qNIzQYpd)
-
-
-
-
-
-
-
-- 
-
-
-
