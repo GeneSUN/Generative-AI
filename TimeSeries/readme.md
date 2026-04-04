@@ -64,6 +64,7 @@ Two major challenge of TSAD:
 
 ### Text-Transformer: Chronos
 
+- https://github.com/GeneSUN/Generative-AI/blob/main/TimeSeries/Chronos.md
 
 
 ### Text-LLM forecasters
