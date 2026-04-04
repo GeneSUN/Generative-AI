@@ -1,12 +1,4 @@
-- [Chronos: Learning the Language of Time Series](https://arxiv.org/pdf/2403.07815)
-- [See it, Think it, Sorted: Large Multimodal Models are Few-shot Time Series Anomaly Analyzers](https://arxiv.org/pdf/2411.02465)
 
-- [Can Multimodal LLMs Perform Time Series Anomaly Detection?](https://arxiv.org/pdf/2502.17812)
-
-- [MMAD: A COMPREHENSIVE BENCHMARK FOR MULTIMODAL LARGE LANGUAGE MODELS IN INDUSTRIAL ANOMALY DETECTION](https://arxiv.org/pdf/2410.09453?)
-- [Anomaly Detection of Tabular Data Using LLMs](https://arxiv.org/pdf/2406.16308)
-- [RATFM: Retrieval-augmented Time Serie Foundation Model for Anomaly Detection](https://arxiv.org/pdf/2506.02081)  (weak)
-- [OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?](https://openreview.net/forum?id=M4qNIzQYpd)
 
 - https://github.com/thuml/Time-Series-Library
 
@@ -28,11 +20,32 @@
 
 ## Image
 
-### Image-Transformer : 
+### Image-Transformer-TIMESNET:
 
+<details>
+  
 - TIMESNET: TEMPORAL 2D-VARIATION MODELING FOR GENERAL TIME SERIES ANALYSIS
 
+1. The model discovers multiple **periodic** patterns (not strictly frequency-domain features).
+
+2. For each period, it reshapes the 1D time series into a 2D tensor,
+   where one axis represents intra-period variation and the other represents inter-period variation.
+
+3. This 2D representation is then processed like an image using CNN
+   (specifically inception-style convolution blocks) to extract temporal patterns and perform forecasting.
+
+<img width="1173" height="369" alt="image" src="https://github.com/user-attachments/assets/1b032e1d-a7f5-417b-ab3d-d2eb3964c60d" />
+
+Apply CNN-Inception to different frequency
+
+<img width="1144" height="427" alt="image" src="https://github.com/user-attachments/assets/241900af-e349-48a3-832d-75229c588868" />
+
+
+</details>
+
 ### image-multi-modal LLM 
+
+<details>
 
 - See it, Think it, Sorted: Large Multimodal Models are Few-shot Time Series Anomaly Analyzers
 - Can Multimodal LLMs Perform Time Series Anomaly Detection?
@@ -41,23 +54,31 @@ Two major challenge of TSAD:
 1. Model heterogeneity/Dataset-dependent
 2. Interpretatibility
 
+</details>
+
 ---
 
 ## Text
 
+
+
 ### Text-Transformer: Chronos
 
----
+
 
 ### Text-LLM forecasters
 
+<details>
+
 #### LLM Prompt Engineering
+  
 - [Large language models can be zero-shot anomaly detectors for time series?](https://arxiv.org/pdf/2405.14755v3)
 - PromptCast: A New Prompt-based Learning Paradigm for Time Series Forecasting
 
 LLMTIME does NOT pre-train or fine-tune an LLM for time series, It transforms time series → tokens → feeds into a general LLM → gets result
 - how the tokenization actually works
 - how outputs are converted back to continuous values
+
 
 
 #### Fine-tuning pretrained LLMs
@@ -69,6 +90,8 @@ Time-LLM: Time series forecasting by reprogramming large language models
   - Weak evidence LLM “understands” time series
   - Poor uncertainty calibration, GPT-4 performs worse than GPT-3
 2. Extremely inefficient, Uses billions of parameters
+
+</details>
 
 ---
 
@@ -153,7 +176,17 @@ print("Parsed value:", predicted_value)  # → 82.0
 
 
 
+## Reference
 
+- [Chronos: Learning the Language of Time Series](https://arxiv.org/pdf/2403.07815)
+- [See it, Think it, Sorted: Large Multimodal Models are Few-shot Time Series Anomaly Analyzers](https://arxiv.org/pdf/2411.02465)
+
+- [Can Multimodal LLMs Perform Time Series Anomaly Detection?](https://arxiv.org/pdf/2502.17812)
+
+- [MMAD: A COMPREHENSIVE BENCHMARK FOR MULTIMODAL LARGE LANGUAGE MODELS IN INDUSTRIAL ANOMALY DETECTION](https://arxiv.org/pdf/2410.09453?)
+- [Anomaly Detection of Tabular Data Using LLMs](https://arxiv.org/pdf/2406.16308)
+- [RATFM: Retrieval-augmented Time Serie Foundation Model for Anomaly Detection](https://arxiv.org/pdf/2506.02081)  (weak)
+- [OpenRCA: Can Large Language Models Locate the Root Cause of Software Failures?](https://openreview.net/forum?id=M4qNIzQYpd)
 
 
 
