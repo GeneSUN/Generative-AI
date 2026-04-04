@@ -36,20 +36,10 @@ Failure:
 ### 3. Curator = “Update the playbook”
 Now we store knowledge into structured context
 
-before: 
-Playbook:
-- Check RSSI
-- Check throughput
-
-After update:
-
-Playbook (updated):
-
-Rule 1:
-If airtime_util > 75% AND RSSI < -70 → likely congestion issue
-
-Rule 2:
-Always check device reboot logs before concluding
+| Before | After |
+|--------|-------|
+| Playbook: | Playbook (updated): |
+| - Check RSSI<br>- Check throughput | Rule 1: If airtime_util > 75% AND RSSI < -70 → likely congestion issue<br>Rule 2: Always check device reboot logs before concluding |
 
 
 
