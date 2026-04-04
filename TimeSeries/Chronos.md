@@ -118,6 +118,8 @@ Chronos is a bad or weaker choice when:
 5. **heterogeneous Global Model** 
     
 > In summary, Use Chronos when "quick-and-dirty".
+- https://colab.research.google.com/drive/1Jfae-RtWdEa1xr9pcfbvNta7HYvsc1yo
+
 
 
 
