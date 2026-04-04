@@ -54,6 +54,8 @@ Two major challenges in TSAD:
 1. **Model heterogeneity / dataset-dependence** — traditional detectors must be retrained for each domain; a multimodal LLM can transfer across domains with only a few in-context examples.
 2. **Interpretability** — conventional detectors output a score or binary label with no explanation; multimodal LLMs produce a human-readable diagnosis alongside the detection result.
 
+- https://colab.research.google.com/drive/1uuO3mCvy9pCm-r1AnaglfjeATtqQpqEe
+
 </details>
 
 ---
