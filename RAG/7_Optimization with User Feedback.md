@@ -32,8 +32,10 @@ Then → Convert Feedback into Training Signals
 ❌ Downvote + bad retrieval
 → build (query, positive chunk, negative chunk)
 → improve retriever / reranker
+
 ❌ Downvote + good retrieval but bad answer
 → improve prompt / answer generation
+
 ❌ Downvote + no evidence but model answered
 → train refusal / “I don’t know” behavior
 
