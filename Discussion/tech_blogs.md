@@ -1,5 +1,3 @@
-## General
-- [CLI vs MCP AI Agents](https://www.hrishidigital.com.au/blog/cli-vs-mcp-ai-agents/)
 
 ## Prompt Engineering
 - [Prompt Engineering Overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
@@ -33,3 +31,6 @@
 ## Harness Engineering
 - [Improving Deep Agents with harness engineering](https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering)
 - [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
+
+## General
+- [CLI vs MCP AI Agents](https://www.hrishidigital.com.au/blog/cli-vs-mcp-ai-agents/)
