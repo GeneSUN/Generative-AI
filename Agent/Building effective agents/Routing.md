@@ -13,39 +13,31 @@ Routing is a system design pattern that classifies inputs before processing and 
                          └──────────────────▶ [Path C: LLM Call] ──▶ (Out C)
 ```
 
----
-
-## 2. Core Value: Separation of Concerns
-
-Different types of inputs should not share the same optimization goal. Routing enables each path to focus on its own problem and avoids conflicts between competing objectives.
-
-> This mirrors the case for prompt chaining: cramming all requirements into a single call dilutes the model's attention and risks important details being overlooked.
 
 ---
 
-## 3. How Routing Is Implemented
 
-Classification can be done using:
-- An LLM
-- Simple rules
-- Traditional ML models
-
-As long as the classification is reliable, the routing structure works.
-
----
-
-## 4. When to Use Routing
+## 2. When to Use Routing (when not)
 
 Use routing only if all three conditions are true:
 - Inputs can be clearly classified with high confidence
 - Different categories require fundamentally different handling logic
 - A single shared pipeline would cause conflicts or degraded performance
 
-If these are not true, routing is likely over-engineering.
+**Advantage**
+- **Distribution**: If you compact different requirment into one prompt, llm may lost its attention, or over-focus on certain categories, for example:
+    - to improve performance on category A, you add constraint, which may degrade performance on category B
+- **Debuggable**: Easy to debug which type of case cause low performance
+
+**When not to use**: 
+- **over-engineering**: if inputs are homogeneous and a single pipeline handles them well, routing is over-engineering
+
+> This mirrors the case for prompt chaining: cramming all requirements into a single call dilutes the model's attention and risks important details being overlooked.
+
 
 ---
 
-## 5. Relationship with Prompt Chaining
+## 3. Relationship with Prompt Chaining
 
 - **Routing** — decides which path to take
 - **Prompt Chaining** — defines how that path is executed

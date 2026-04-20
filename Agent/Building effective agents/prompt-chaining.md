@@ -67,11 +67,11 @@ Suitable when:
 - Prefer a single LLM call for efficiency
 
 **High error-cost scenarios** *(e.g., enterprise branding, production systems)*
-- Single-call reasoning happens inside a black box, making it hard to interpret or debug; prompt chaining breaks the task into steps, so the quality of each intermediate output is inspectable
-- Processing too much information in a single call risks overlooking critical details; prompt chaining narrows the model's focus to one component at a time, reducing that risk
+- **Debuggable**: Single-call reasoning happens inside a black box, making it hard to interpret or debug; prompt chaining breaks the task into steps, so the quality of each intermediate output is inspectable
+- **Distribution**: Processing too much information in a single call risks overlooking critical details; prompt chaining narrows the model's focus to one component at a time, reducing that risk
 
 **when not use it**
-- If the task requires holistic reasoning — where context and interdependencies span the entire problem — decomposing it into steps causes each call to lose sight of the whole, potentially producing a worse result than a single comprehensive call
+- **lack of cohension(over-engineering)**: If the task requires holistic reasoning — where context and interdependencies span the entire problem — decomposing it into steps causes each call to lose sight of the whole, potentially producing a worse result than a single comprehensive call
 
 
 > Try both one-call and prompt-chaining, compare their cost/speed and error
