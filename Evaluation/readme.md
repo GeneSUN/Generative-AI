@@ -37,19 +37,26 @@ The fundamental difference is **determinism**.
 <details>
 <summary><b>Components overview</b></summary>
 
-| Group | Component | Description |
-|---|---|---|
-| **Static Definition** | **Task** | One concrete test case: input + success criteria. Analogous to (x, y) in an ML test dataset. |
-| *(what you prepare)* | **Grader** | The scoring logic applied to an outcome. Analogous to ML metrics (MSE, cross-entropy). Can be rule-based, model-based, or human. |
-| | **Tag / Segment** | Category label on each task — e.g., recommendation, metric explanation, diagnosis. Lets you identify which segments underperform and apply different standards per segment. |
-| **Dynamic Execution** | **Outcome** | The final state produced by the agent — the only mandatory evaluation target. Analogous to y_predicted in ML. |
-| *(what happens at runtime)* | **Transcript** | The complete record of a trial: final output, tool calls, retrieved chunks, reasoning steps, intermediate results. Unlike ML which only cares about the final prediction, AI evaluation needs the path for diagnosis. |
-| | **Trial** | One full run of a task. Because agents are non-deterministic, run ×10 trials and aggregate scores to get a stable signal. |
-| **System Infrastructure** | **Eval Harness** | The control center — distributes tasks, runs trials in parallel, applies graders, and aggregates scores. |
-| *(what orchestrates it)* | **Agent Harness** | The agent's runtime scaffold — wraps the LLM with tools, memory, and environment so it can execute tasks. |
+| Group | Component | Description | Suggestions |
+|---|---|---|---|
+| **Static Definition** | **Task** | One concrete test case: input + success criteria. Analogous to (x, y) in an ML test dataset. |  1. unambiguous tasks; 2. reference answer means the question is solvable; positive/negative |
+| *(what you prepare)* | **Grader** | The scoring logic applied to an outcome. Analogous to ML metrics (MSE, cross-entropy). Can be rule-based, model-based, or human. | |
+| | **Tag / Segment** | Category label on each task — e.g., recommendation, metric explanation, diagnosis. Lets you identify which segments underperform and apply different standards per segment. | |
+| **Dynamic Execution** | **Outcome** | The final state produced by the agent — the only mandatory evaluation target. Analogous to y_predicted in ML. | |
+| *(what happens at runtime)* | **Transcript** | The complete record of a trial: final output, tool calls, retrieved chunks, reasoning steps, intermediate results. Unlike ML which only cares about the final prediction, AI evaluation needs the path for diagnosis. | (1).Reading transcripts is the only way to verify that your evaluation logic is fair and accurately measuring what matters. (2). By analyzing these traces, you can distinguish between genuine agent mistakes and flawed grading that rejects valid solutions.|
+| | **Trial** | One full run of a task. Because agents are non-deterministic, run ×10 trials and aggregate scores to get a stable signal. | |
+| **System Infrastructure** | **Eval Harness** | stable environment, | Each trial should be “isolated” by starting from a clean environment.|
+| *(what orchestrates it)* | **Agent Harness** | The agent's runtime scaffold — wraps the LLM with tools, memory, and environment so it can execute tasks. | |
 
 </details>
 
+
+<details>
+<summary><b>Going from zero to one: a roadmap to great evals for agents</b></summary>
+
+![alt text](image.png)
+
+</details>
 
 
 ### Types of Graders for Agents
@@ -75,6 +82,12 @@ The fundamental difference is **determinism**.
 | Pairwise Comparison | Don't score — just compare which of A vs. B is better. Ideal for regression and preference testing |
 | Consensus | Three models vote or average. Reduces bias and hallucination from any single model |
 
+- when use "Assertion" or "Rubric Scoring", consider partial credit.
+- calibrate Model-Based Grader with Human Grader
+- review grader process to find grading bugs.
+    - For example, Opus 4.5 initially scored 42% on CORE-Bench, until an Anthropic researcher found multiple issues: rigid grading that penalized “96.12” when expecting “96.124991…”,
+
+
 </details>
 
 <details>
@@ -85,18 +98,16 @@ The fundamental difference is **determinism**.
 | Spot-check | Engineering norm: periodically sample 1% of real transcripts to catch automated eval drift |
 | Agreement | Reverse diagnostic: if experts disagree with each other, the task definition is broken, not the model |
 
+
 </details>
 
----
 
-## 3. Going from zero to one: a roadmap to great evals for agents
 
-![alt text](image.png)
 
 
 ---
 
-## 4. Lifecycle, and Non-Determinism
+## 3. Lifecycle, and Non-Determinism
 
 <details>
 <summary><b>Metrics: Choosing the Right Standard</b></summary>
@@ -125,7 +136,7 @@ Because AI agents are non-deterministic, a single run proves nothing. The metric
 
 </details>
 
-## 5. Tailored Evals by Agent Type
+## 4. Tailored Evals by Agent Type
 
 <details>
 <summary><b>Agent type breakdown</b></summary>
@@ -141,7 +152,7 @@ Because AI agents are non-deterministic, a single run proves nothing. The metric
 
 ---
 
-## 6. Evaluation Tools
+## 5. Evaluation Tools
 
 <details>
 <summary><b>Tool comparison</b></summary>
