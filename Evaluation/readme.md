@@ -107,7 +107,22 @@ The fundamental difference is **determinism**.
 
 ---
 
-## 3. Lifecycle, and Non-Determinism
+## 3. Tailored Evals by Agent Type
+
+<details>
+<summary><b>Agent type breakdown</b></summary>
+
+| Agent Type | Characteristics | Eval Focus | Graders |
+|---|---|---|---|
+| **Coding / Math** | Most deterministic agent type — answers are right or wrong | Correctness; Safety; Efficiency (token cost, latency) | Unit tests; Static analysis (linting, vulnerability scan); Log verification |
+| **Research** | High hallucination risk; sources shift over time | Factual accuracy; Source credibility; Coverage | Hallucination check (claims grounded in sources); Expert review (human calibration on edge cases) |
+| **Chat** | Multi-dimensional & subjective; requires tool calls | Experience (UX) vs. Risk control (safety) | LLM assertion (empathy check); Tool call check (financial guardrails); User simulator (stress test) |
+
+</details>
+
+---
+
+## 4. Lifecycle, and Non-Determinism
 
 <details>
 <summary><b>Metrics: Choosing the Right Standard</b></summary>
@@ -133,20 +148,6 @@ Because AI agents are non-deterministic, a single run proves nothing. The metric
 | **Metric** | Pass@k or Pass@1 — lenient standard | Pass^k — require 100% pass |
 | **Mindset** | Exploratory — 20% pass rate is fine | Strict — any score drop triggers an alert |
 | **Signal** | Pass rate ≥ 95% → graduate to regression suite | Pass rate drops → something broke |
-
-</details>
-
-## 4. Tailored Evals by Agent Type
-
-<details>
-<summary><b>Agent type breakdown</b></summary>
-
-| Agent Type | Characteristics | Eval Focus | Graders |
-|---|---|---|---|
-| **Coding / Math** | Most deterministic agent type — answers are right or wrong | Correctness; Safety; Efficiency (token cost, latency) | Unit tests; Static analysis (linting, vulnerability scan); Log verification |
-| **Research** | High hallucination risk; sources shift over time | Factual accuracy; Source credibility; Coverage | Hallucination check (claims grounded in sources); Expert review (human calibration on edge cases) |
-| **Chat** | Multi-dimensional & subjective; requires tool calls | Experience (UX) vs. Risk control (safety) | LLM assertion (empathy check); Tool call check (financial guardrails); User simulator (stress test) |
-| **Computer** | Operates GUI; diverse interaction paths | Outcome verification; Strategy trade-off (cost / efficiency) | Sandbox result check (files / orders); Strategy selection analysis (API vs. screenshot) |
 
 </details>
 
