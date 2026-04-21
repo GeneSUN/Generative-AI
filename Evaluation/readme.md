@@ -122,7 +122,7 @@ The fundamental difference is **determinism**.
 
 ---
 
-## 4. Lifecycle, and Non-Determinism
+## 4. Evaluation Lifecycle and Non-Determinism
 
 <details>
 <summary><b>Metrics: Choosing the Right Standard</b></summary>
@@ -148,6 +148,23 @@ Because AI agents are non-deterministic, a single run proves nothing. The metric
 | **Metric** | Pass@k or Pass@1 — lenient standard | Pass^k — require 100% pass |
 | **Mindset** | Exploratory — 20% pass rate is fine | Strict — any score drop triggers an alert |
 | **Signal** | Pass rate ≥ 95% → graduate to regression suite | Pass rate drops → something broke |
+
+</details>
+
+<details>
+<summary><b>Production: Evaluation Never Stops</b></summary>
+
+Shipping is not the finish line — it's where the real data starts. Once in production, the eval loop continues:
+
+- **Monitor** — track agent performance on live traffic. Sudden drops in pass rate signal regressions or distribution shift.
+- **Collect** — real-world interactions surface edge cases your test suite never anticipated. Flag and store meaningful failures.
+- **Expand** — periodically promote collected cases into your eval suite. Your dataset should grow with your product.
+
+```
+Build → Eval → Ship → Monitor → Collect → Expand eval suite → repeat
+```
+
+The test dataset is a living artifact. A static eval suite drifts out of sync with reality; a growing one keeps your standards honest.
 
 </details>
 
