@@ -61,6 +61,10 @@ Context rot directly triggers, breeds, and amplifies these four failure modes.
 
 ---
 
+this is about if context is not well-defined, what is the possible issues
+
+https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html?ref=blog.langchain.com#context-poisoning
+
 1. Context Poisoning
 
 2. Context Distraction
