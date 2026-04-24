@@ -1,0 +1,11 @@
+reference:
+- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+    - [Managing context on the Claude Developer Platform](https://claude.com/blog/context-management)
+    - [Writing effective tools for agents — with agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
+    - [Context engineering: memory, compaction, and tool clearing](https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools)
+- [Context Engineering-LangChain](https://www.langchain.com/blog/context-engineering-for-agents)
+- [Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)
+- [Context Engineering for AI Agents with LangChain and Manus](https://podwise.ai/dashboard/episodes/5440694)
+- [langchain Docs: Context engineering in agents](https://docs.langchain.com/oss/python/langchain/context-engineering)
+- [cursor: Dynamic context discovery](https://cursor.com/blog/dynamic-context-discovery)
+-
