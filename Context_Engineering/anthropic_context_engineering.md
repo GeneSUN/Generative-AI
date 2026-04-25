@@ -67,7 +67,7 @@ Context engineering is its evolution:
 
 The dashboard must show exactly the right information at the right moment. Show too little and the pilot crashes. Show everything — every reading from every flight in aviation history — and the pilot crashes too.
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 </details>
 
@@ -132,7 +132,7 @@ A system prompt need to find the right altitude among two opposite directions:
 | Too vague | High-level guidance with no specifics | The model guesses what you want |
 | **Sweet spot** | Clear guardrails + room for judgment | Handles expected cases and surprises |
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 **Structure tip:** Use XML tags (`<instructions>`, `<background>`) or Markdown headers to organize the prompt. This helps the model instantly locate what matters — where instructions end and data begins.
 

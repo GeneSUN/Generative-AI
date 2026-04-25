@@ -28,12 +28,12 @@ What are the types of context that we need to manage when building LLM applicati
 
 ### Context Engineering for Agents
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 
 ### The cores of Context Engineering
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 ## How Long Contexts Fail (Four Common failures)
 
