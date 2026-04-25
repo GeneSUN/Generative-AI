@@ -118,7 +118,7 @@ Research uses a "needle-in-a-haystack" test: hide one small fact inside a massiv
 </details>
 
 
-## 4. How to design Context Engineering: Static Design: three pillars for effective context:
+## 4.1. Static design: three pillars for effective context
 
 
 <details>
@@ -190,7 +190,7 @@ The model reads this example and infers the reasoning pattern — what signals m
 
 
 
-## 5. How do agents dynamically retrieve context at runtime?
+## 4.2. Dynamic design: retrieving context at runtime
 
 Since agents are LLMs autonomously using tools in a loop, how they collect, filter, and update context at each step is critical. There are two approaches — and the best systems combine both.
 
