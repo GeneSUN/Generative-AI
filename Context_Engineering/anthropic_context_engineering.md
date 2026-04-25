@@ -263,35 +263,40 @@ Claude Code uses exactly this model. As model capabilities improve, agents will 
 
 </details>
 
-## Context engineering for long-horizon tasks
+## 6. Context engineering for long-horizon tasks
 
-1. Compaction: The "Fresh Notebook" Strategy
-The Concept: When the AI’s memory is getting full and it’s starting to get "fuzzy" (Context Rot), you stop, summarize everything important, and start a brand-new conversation with that summary.
+Three strategies for managing context across tasks that run for hours or days.
 
-How it works: The model looks at its own history. It keeps the "High-Signal" stuff (architectural decisions, unresolved bugs) and deletes the "Noise" (raw logs, code it already fixed, "Hello" messages).
+<details>
+<summary><strong>1. Compaction — The "Fresh Notebook" Strategy</strong></summary>
 
-The Goal: Continuity without the baggage.
+When context rot sets in and recall starts degrading, don’t push through — reset deliberately.
 
-The Risk: If you summarize too aggressively, you might accidentally throw away a tiny detail that becomes important three hours later.
+- **What it does:** the model reviews its own history, distills the high-signal content (architectural decisions, unresolved bugs), and discards the noise (raw logs, already-fixed code, filler messages)
+- **Goal:** continuity without the baggage — the new conversation starts informed, not overloaded
+- **Trade-off:** aggressive summarization risks discarding a small detail that turns out to matter three hours later
 
-2. Structured Note-taking: The "Detective’s Notepad"
-The Concept: Instead of trying to remember everything, the AI maintains a separate file (like NOTES.md or a memory tool) where it writes down key facts as it works.
+</details>
 
-How it works: The AI acts like a human researcher. It thinks, "I just found out this library is version 2.0; I should write that in my notes so I don't forget."
+<details>
+<summary><strong>2. Structured Note-taking — The "Detective’s Notepad"</strong></summary>
 
-The Pokémon Example: Anthropic mentions an AI playing Pokémon. It couldn't remember 1,000 steps of gameplay in its "brain," so it wrote a map and a "to-do list" in a separate file. Every time its memory was reset, it just read its own notes to get back up to speed.
+Instead of relying on context memory, the agent maintains an external file (e.g. `NOTES.md`) and writes key facts down as it works.
 
-Why it's better: It's more precise than a summary. It allows the AI to track specific numbers (like "Pikachu is level 8") over a very long time.
+- **How it works:** the agent acts like a human researcher — when it discovers something important ("this library is version 2.0"), it writes it down rather than trusting recall
+- **Pokémon example:** an AI playing Pokémon couldn’t hold 1,000 steps of gameplay in its context window, so it maintained an external map and to-do list; after each reset, it read its own notes to resume where it left off
+- **Advantage over compaction:** more precise — captures specific values (e.g. "Pikachu is level 8") that a summary would round away
 
-3. Sub-agent Architectures: The "CEO" Strategy
-The Concept: Don't make one AI do everything. Use a hierarchy.
+</details>
 
-How it works:
+<details>
+<summary><strong>3. Sub-agent Architectures — The "CEO" Strategy</strong></summary>
 
-The Manager (Lead Agent): Keeps a "clean" context window. It only knows the big-picture plan.
+Don’t make one agent do everything. Use a hierarchy that isolates complexity.
 
-The Specialist (Sub-agent): Is given a specific task (like "Search the database for bug X"). This specialist can get its context window "messy" and "polluted" doing the work.
+- **The Manager (lead agent):** maintains a clean context window focused on the big-picture plan
+- **The Specialist (sub-agent):** takes a specific task ("search the database for bug X"), does the messy work, and lets its own context get cluttered
+- **The handoff:** once finished, the specialist returns a concise summary to the Manager and is discarded
+- **Benefit:** the Manager’s context never gets polluted by the low-level detail the Specialist had to wade through
 
-The Handoff: Once the specialist is done, it gives the Manager a 1-page summary and then "disappears."
-
-The Benefit: The Manager never gets overwhelmed by the technical "muck" the specialist had to wade through.
+</details>
