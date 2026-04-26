@@ -1,11 +1,21 @@
 # Context Engineering for Personalization: State Management with Long-Term Memory
 
-- https://developers.openai.com/cookbook/examples/agents_sdk/context_personalization
-- https://llmrefs.com/blog/reverse-engineering-chatgpt-memory
 
----
+
+- [Context Engineering for Personalization - State Management with Long-Term Memory Notes using OpenAI Agents SDK](https://developers.openai.com/cookbook/examples/agents_sdk/context_personalization)
+
+
+- [Context Engineering - Short-Term Memory Management with Sessions from OpenAI Agents SDK](https://developers.openai.com/cookbook/examples/agents_sdk/session_memory?utm_source=chatgpt.com)
+
+
+<hr style="border: 2px solid #555;">
+
+
+
 
 ## Reverse Engineering ChatGPT Memory: Four-Layer Architecture
+
+> https://llmrefs.com/blog/reverse-engineering-chatgpt-memory
 
 ChatGPT's memory system is composed of four distinct layers, each with different persistence scope and purpose.
 
