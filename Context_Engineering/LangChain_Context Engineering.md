@@ -12,7 +12,7 @@ https://www.langchain.com/blog/context-engineering-for-agents
 
 
 
-### short-term: Scratchpads
+### Short-term: Scratchpads
 - [The "think" tool: Enabling Claude to stop and think in complex tool use situations](https://www.anthropic.com/engineering/claude-think-tool)
 - [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
 
@@ -166,3 +166,11 @@ tools = [
 </details>
 
 </details>
+
+
+
+### Long-term: Memory
+
+[Reflexion](https://arxiv.org/pdf/2303.11366) introduced the idea of reflection following each agent turn and re-using these self-generated memories. 
+
+[Generative Agents](https://ar5iv.labs.arxiv.org/html/2304.03442?ref=blog.langchain.com) created memories synthesized periodically from collections of past agent feedback.
