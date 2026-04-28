@@ -54,9 +54,9 @@ This hierarchical design keeps the agent focused — and is the organizing princ
 
 | Level | What's loaded | When | Purpose |
 |---|---|---|---|
-| 1 | metadata `name` + `description` | Always, at startup | Routing — decide if skill is relevant |
-| 2 | Full `SKILL.md` body | When skill is relevant | Instructions — how to use the skill |
-| 3+ | Linked files (scripts, references, templates, sub-instructions) | Only when needed within a task | Depth — handle complexity and scenario-specific detail |
+| 1 | Metadata `name` + `description` | Always, at startup | Routing — decide if skill is relevant |
+| 2 | Instruction `SKILL.md` body | When skill is relevant | Instructions — how to use the skill |
+| 3+ | Linked files <br>(scripts, references, templates) | Only when needed | 1. Step-by-step instructions<p>2. Examples of inputs and outputs <br>3. Common edge cases |
 
 **What Lives at Level 3+**
 
@@ -118,6 +118,7 @@ The sequence of operations shown:
 
 ## Reference:
 ### Claude:
+- [Using Agent Skills with the API](https://platform.claude.com/docs/en/build-with-claude/skills-guide)
 - [open standard Agent Skills](https://agentskills.io/home)
 - [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 - [The-Complete-Guide-to-Building-Skill-for-Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf)
