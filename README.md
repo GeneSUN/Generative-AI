@@ -5,8 +5,13 @@ This repository traces the evolution of applied AI from its earliest engineering
 ---
 
 ## The Story
-
 ### Chapter 1 — Prompt Engineering: Learning to Talk to AI
+
+<details>
+<summary>
+
+
+</summary>
 
 When LLMs became publicly accessible around 2022, the first bottleneck wasn't the model — it was us. We didn't know how to ask. A poorly framed question produced a generic, unreliable answer; the same question, reframed with explicit instructions, few-shot examples, or a chain-of-thought scaffold, could dramatically improve output quality.
 
@@ -21,9 +26,17 @@ This wasn't just a bag of tricks. It was the first recognition that *how informa
 
 → [Prompt Engineering](Prompt%20Engineering/readme.md)
 
+</details>
+
 ---
 
 ### Chapter 2 — RAG: Giving AI a Library
+
+<details>
+<summary>
+
+
+</summary>
 
 A well-prompted model is still bounded by what it was trained on. It doesn't know your internal documentation, your product specs, or last quarter's reports. Its knowledge has a cutoff date. It cannot memorize everything.
 
@@ -40,29 +53,75 @@ RAG extended this further into multi-source retrieval (domain corpora, monitorin
 
 → [RAG](RAG/readme.md)
 
+</details>
+
 ---
 
 ### Chapter 3 — Agents: Giving AI a Toolkit
 
-Knowing things is not enough. An agent that can only read and write text cannot browse a website, execute code, query a database, or send an email. AI is not omnipotent — but it can be equipped.
+<details>
+<summary>
 
-The agent paradigm provides the model with **tools**: discrete, callable functions that extend what it can do. Given the right tools and clear instructions, an LLM learns to select and sequence them appropriately based on the task at hand.
 
-Simple agents scale naturally into complex workflows:
+</summary>
 
-- **Prompt chaining** — break multi-step tasks into sequential calls
-- **Routing** — direct inputs to the appropriate specialist
-- **Parallelization** — run independent subtasks concurrently
+Knowing things is not enough. A model that can only read and write text cannot browse a website, execute code, query a database, or send an email. The agent paradigm closes this gap — not by making the model smarter, but by giving it **structure, actions, and domain knowledge**.
+
+An agent has three layers:
+
+---
+
+**Workflow — the structure of how the agent thinks and acts**
+
+Workflow is the skeleton: it defines how information flows, when decisions are made, and what runs in sequence versus in parallel. Without a workflow, you have a prompt. With a workflow, you have a system.
+
+Common patterns:
+
+- **Prompt chaining** — break a complex task into sequential steps, each feeding the next
+- **Routing** — classify the input and direct it to the right specialist
+- **Parallelization** — run independent subtasks concurrently, then merge
 - **Orchestrator-worker** — a coordinating agent delegates to specialized sub-agents
 - **Evaluator-optimizer** — one agent critiques and refines another's output
 
-This is where AI stopped being a question-answering interface and started resembling a *collaborative system*.
+The workflow doesn't care what tools exist. It defines *when* and *how* the agent decides to act.
+
+---
+
+**Tools — the actions the agent can take**
+
+A model without tools is a chatbot. Tools are what make an agent *act*, not just *speak*. A tool is any discrete, callable function — a web search, a database query, a code executor, an API call, or even another LLM call acting as a classifier or critic.
+
+The agent reads the available tools, reasons about which one fits the current step, and invokes it. The result feeds back into the next reasoning step. This loop — *reason → act → observe → reason* — is the core of agentic behavior.
+
+Without tools, there is no agent.
+
+---
+
+**Skills — domain knowledge bundled with the tools that serve it**
+
+As the number of tools grows, raw lists become unmanageable. Skills solve this by grouping instructions and relevant tools around a single domain: a PDF skill knows how to read, fill, and validate PDF forms; an email skill knows how to draft, send, and parse replies; a debugging skill knows how to read stack traces and propose fixes.
+
+A skill is not just a group of tools — it is **domain knowledge + the tools and scripts that operationalize it**. The agent reads a skill's instructions first, then uses the tools inside it guided by that context. This keeps the agent focused and the tool surface comprehensible.
+
+```
+Workflow  →  defines the structure and flow
+Tools     →  define what the agent can do (callable actions)
+Skills    →  define how to behave in a domain (instructions + relevant tools)
+```
 
 → [Agent](Agent/readme.md) · [Building Effective Agents](Agent/Building%20effective%20agents/Readme.md) · [Agent Skills](Agent/Skills/)
+
+</details>
 
 ---
 
 ### Chapter 4 — Context Engineering: Managing What AI Remembers
+
+<details>
+<summary>
+
+
+</summary>
 
 As context windows grew from 4K to 128K tokens and beyond, a new problem emerged: more space doesn't automatically mean better performance. Models can "lose the middle" — attention degrades for information buried in long contexts. Long multi-turn conversations accumulate noise. Relevant history competes with irrelevant history.
 
@@ -78,9 +137,17 @@ This is the natural extension of RAG: RAG manages static knowledge; context engi
 
 → [Context Engineering](Context_Engineering/readme.md) · [ACE Framework](Discussion/agentic_context_engineering.md)
 
+</details>
+
 ---
 
 ### Chapter 5 — Evaluation & Harness Engineering: Defining What Good Means
+
+<details>
+<summary>
+
+
+</summary>
 
 Throughout all of this, one question persisted: *how do you know if it's working?* AI can be fluent without being correct. It can be confident while being wrong. Without a standard, iteration is guesswork.
 
@@ -95,6 +162,8 @@ Harness engineering goes one step further: it **embeds evaluation and constraint
 This is the discipline that turns a capable model into a reliable product.
 
 → [Evaluation](Evaluation/readme.md) · [Anthropic](Anthropic/readme.md)
+
+</details>
 
 ---
 
