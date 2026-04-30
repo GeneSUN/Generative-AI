@@ -16,3 +16,7 @@ The key is balancing three factors: capabilities, speed, and cost.
 
 - Prompts are defined in centralized configuration files or libraries
 - Tools as discrete reusable modules
+
+
+
+https://docs.langchain.com/oss/python/langgraph/workflows-agents
