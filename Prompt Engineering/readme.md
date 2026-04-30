@@ -6,6 +6,11 @@ A prompt is a conversation. Like any good conversation, it works best when you e
 
 ## 1. Who You Are — Role Prompting
 
+<details>
+<summary>
+
+</summary>
+
 Before asking anything, tell the model who it is. A well-defined role anchors tone, expertise level, and behavior throughout the conversation. Without it, the model defaults to a generic assistant.
 
 ```python
@@ -17,9 +22,16 @@ messages=[
 
 Role prompting is most effective when the role is specific and domain-relevant — not just "you are an expert" but "you are an expert in X who cares about Y."
 
+</details>
+
 ---
 
 ## 2. Why You Care — Add Context
+
+<details>
+<summary>
+
+</summary>
 
 A role tells the model *who* it is; context tells it *why this matters*. Context shapes relevance: the same question answered differently for a beginner vs. an expert, for a quick decision vs. a deep investigation.
 
@@ -35,9 +47,16 @@ Context: I'm debugging a production 5G network. The handover failure rate jumped
 
 Good context eliminates wrong answers before they happen.
 
+</details>
+
 ---
 
 ## 3. What You Want — Instruction Prompting
+
+<details>
+<summary>
+
+</summary>
 
 Now tell the model exactly what to do — and what not to do. Explicit instructions reduce ambiguity and prevent the model from filling gaps with guesses.
 
@@ -51,9 +70,16 @@ Now tell the model exactly what to do — and what not to do. Explicit instructi
 
 Negative instructions ("do not", "avoid") are just as important as positive ones. They define the boundaries of acceptable behavior.
 
+</details>
+
 ---
 
 ## 4. How to Think — Chain of Thought
+
+<details>
+<summary>
+
+</summary>
 
 For complex or multi-step tasks, tell the model to reason step by step before answering. This is chain-of-thought (CoT) prompting. It reduces errors by forcing intermediate reasoning to be explicit — and explicit reasoning can be checked.
 
@@ -69,9 +95,16 @@ CoT is especially effective for math, logic, diagnosis, and any task where the a
 
 Variant — **zero-shot CoT**: simply append `"Think step by step."` to any prompt. Surprisingly effective with no examples needed.
 
+</details>
+
 ---
 
 ## 5. Show, Don't Just Tell — Few-Shot Examples
+
+<details>
+<summary>
+
+</summary>
 
 After defining role, context, instructions, and reasoning style, examples lock in the exact format and behavior you want. One well-chosen example is often worth a paragraph of instruction.
 
@@ -90,9 +123,16 @@ Choose examples that cover the range of inputs you expect, including edge cases.
 
 → [Few-shot notebook](https://colab.research.google.com/drive/1DwfVi6N9wDOLUNC0uVTI18BCHy-w0k51#scrollTo=b_Cq1tfrEAWS)
 
+</details>
+
 ---
 
 ## 6. Keep It Organized — XML Tags
+
+<details>
+<summary>
+
+</summary>
 
 As prompts grow in complexity — multiple sections, long context, nested instructions — plain text becomes hard to parse for both humans and models. XML tags provide explicit structure that the model can reliably reference.
 
@@ -128,9 +168,16 @@ Benefits:
 - Makes long prompts maintainable
 - Reduces model confusion on where one section ends and another begins
 
+</details>
+
 ---
 
 ## Putting It Together
+
+<details>
+<summary>
+
+</summary>
 
 A complete, well-structured prompt follows this anatomy:
 
@@ -144,6 +191,8 @@ A complete, well-structured prompt follows this anatomy:
 ```
 
 Not every prompt needs all six. Simple tasks may only need instructions and a question. Complex, high-stakes tasks benefit from the full structure.
+
+</details>
 
 ---
 
