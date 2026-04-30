@@ -1,22 +1,13 @@
-## Start simple, scale intelligently.
+**Workflow — the structure of how the agent thinks and acts**
 
-1. start from prompt engineering
-2. expand to complicated agent workflow: 
-    - Prompt chaining
-    - Routing
-    - Parallelization
-3. Multi-agent
-    - Orchestrator-workers
-    - Evaluator-optimizer
+Workflow is the skeleton: it defines how information flows, when decisions are made, and what runs in sequence versus in parallel. Without a workflow, you have a prompt. With a workflow, you have a system.
 
-**Choose the right model for the job**
-The key is balancing three factors: capabilities, speed, and cost.
+Common patterns:
 
-## Practice modular design
+- **Prompt chaining** — break a complex task into sequential steps, each feeding the next
+- **Routing** — classify the input and direct it to the right specialist
+- **Parallelization** — run independent subtasks concurrently, then merge
+- **Orchestrator-worker** — a coordinating agent delegates to specialized sub-agents
+- **Evaluator-optimizer** — one agent critiques and refines another's output
 
-- Prompts are defined in centralized configuration files or libraries
-- Tools as discrete reusable modules
-
-
-
-https://docs.langchain.com/oss/python/langgraph/workflows-agents
+The workflow doesn't care what tools exist. It defines *when* and *how* the agent decides to act.

@@ -1,75 +1,52 @@
 # Tool Use with Claude
 
-## Overview
+Tools are what separate an agent from a static workflow.
+- A **static workflow** follows a predetermined path — if-else branches, case-when routing, fixed sequences.
+- An **agent** (1). reasons about which action to take at each step and (2). updates that reasoning based on what it observes; tools are the actions it can take.
 
-1. LLMs are powerful reasoning engines. They understand intent, plan steps, and synthesize information.
-2. LLMs have inherent limitations: (1) Knowledge cutoff (outdated information); (2) No awareness of your codebase, files, or libraries; (3) Context window constraints (can't hold everything at once).
-3. This is precisely why agents and RAG exist
-    - The LLM doesn't merely use tools — it decides which tool to use and when. This autonomy is what distinguishes an agent from a simple API call.
-    - to extend the LLM by supplying relevant tools and information on demand, rather than embedding everything upfront.
-4. The loop is essential. Each tool result becomes new context that the LLM reasons over, potentially triggering further tool calls.
+---
+
+## Part 1 — What Is a Tool and How an Agent Uses It
 
 
-## What is a tool, and how to build one
 
 <details>
-<summary>Tool function — it can be a function, a class, or an API call</summary>
+<summary><b>What is a tool</b></summary>
 
-- **Use descriptive names**: Both your function name and parameter names should clearly indicate their purpose.
-- **Validate inputs**: Check that required parameters are not empty or invalid, and raise errors when they are.
-- **Provide meaningful error messages**: Claude can read error messages and may retry the function call with corrected parameters.
-
-</details>
-
-<details>
-<summary>Tool schema</summary>
-
-A complete tool specification has three main parts:
-
-- **name** — A clear, descriptive name for your tool (e.g., `get_weather`)
-- **description** — What the tool does, when to use it, and what it returns
-    - Aim for 3–4 sentences explaining what the tool does
-    - Describe when Claude should use it
-    - Explain what kind of data it returns
-    - Provide detailed descriptions for each argument
-- **input_schema** — The JSON schema describing the function's arguments
-
-#### The Easy Way to Generate Schemas
-Instead of writing JSON schemas from scratch, you can use Claude itself to generate them. Here is the process:
-
-**Prompt template** =
-```python
-
-I have defined a Python tool function below. Please write a valid JSON schema specification for the purposes of tool calling with Claude.
-
-Ensure the schema includes:
-
-- A clear name for the tool.
-- A descriptive description (3-4 sentences) explaining what the tool does and when to use it.
-- An input_schema that defines all function arguments, their types, and descriptions.
-- A list of required parameters.
-
-Here is the function code:
-
-<tool_function_code>
-[PASTE YOUR FUNCTION CODE HERE]
-</tool_function_code>
-
-Please format the output so I can directly use it in my tools list for the Claude API.
-
+```
+┌─────────────────────────────────────────────────────────┐
+│                        TOOL SCHEMA                      │
+│                                                         │
+│  name           ◄────────────────┐                      │
+│  description    ◄────────────────┼──┐                   │
+│  input_schema   ◄────────────────┼──┼──┐                │
+│  input_examples                  │  │  │                │
+│                                  │  │  │                │
+│  ┌────────────────────────────── │──│──│──────────────┐ │
+│  │         TOOL FUNCTION         │  │  │              │ │
+│  │                               │  │  │              │ │
+│  │  def function_name(...):  ────┘  │  │              │ │
+│  │      """docstring"""  ───────────┘  │              │ │
+│  │      (param: type, ...)  ───────────┘              │ │
+│  │                                                    │ │
+│  │      # function body                               │ │
+│  │      ...                                           │ │
+│  │      return result                                 │ │
+│  │                                                    │ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
 ```
 
 </details>
 
 
-## Tool loops — how the LLM decides which tools to use and how tools interact with it
+<details>
+<summary><b>How the agent uses tools: The five-step sequence</b></summary>
 
-Claude does not store conversation history — you must manage it manually. When working with tool responses, you must preserve the entire content structure, including all blocks (tools Managing Conversation History with Multi-Block Messages).
-
-The tool usage process follows this pattern:
+Once the schema is defined, the agent reads it, reasons about which tool fits the current step, invokes it, and feeds the result back into the next reasoning step. Claude does not store conversation history, so every tool result must be passed back alongside the full message history.
 
 <details>
-<summary>1. Send tool request to model, let it decide which tool to use</summary>
+<summary>1. Send the request — let the model decide which tool to use</summary>
 
 ```python
 message = client.messages.create(
@@ -83,25 +60,23 @@ message = client.messages.create(
 </details>
 
 <details>
-<summary>2. Receive the assistant message containing a text block and a tool use block</summary>
+<summary>2. Receive the assistant message — text block + tool use block</summary>
 
-When Claude decides to use a tool, it returns an assistant message with multiple blocks in the content list. You should extract the block `id` and input from the tool use block:
+When Claude decides to use a tool, it returns an assistant message with multiple content blocks. Extract the `id` and `input` from the tool use block:
 
-**Message blocks**
 ```python
 [ToolUseBlock(id='toolu_015vDN6vQyFSzWZj77TUujcz',
-                caller=DirectCaller(type='direct'),
-                input={'datetime_str': '2026-03-24', 'duration': 10, 'unit': 'days'}, name='add_duration_to_datetime',
+                input={'datetime_str': '2026-03-24', 'duration': 10, 'unit': 'days'},
+                name='add_duration_to_datetime',
                 type='tool_use')]
 ```
 
 </details>
 
 <details>
-<summary>3. Extract tool information and execute the actual function</summary>
+<summary>3. Extract tool information and execute the function</summary>
 
-```
-# Loop through content blocks
+```python
 for block in message.content:
     if block.type == "text":
         print(block.text)          # e.g. "I'll calculate that for you."
@@ -115,7 +90,7 @@ for block in message.content:
 </details>
 
 <details>
-<summary>4. Send tool result back to Claude along with complete conversation history</summary>
+<summary>4. Send the tool result back with the full conversation history</summary>
 
 ```python
 final = client.messages.create(
@@ -133,7 +108,7 @@ final = client.messages.create(
 </details>
 
 <details>
-<summary>5. Receive final response from Claude, stop the tool-loop</summary>
+<summary>5. Loop until the model stops calling tools</summary>
 
 ```python
 def run_conversation(messages):
@@ -160,3 +135,80 @@ def run_conversation(messages):
 ```
 
 </details>
+
+</details>
+
+---
+
+## Part 2 — Designing Tools for Agents
+
+
+<details>
+<summary><b>1. Name and description are the most important fields</b></summary>
+
+The name is what the agent sees first when scanning a list of tools. Before reading any description, the name alone should communicate:
+- What service this belongs to
+- What resource it operates on
+- What action it performs
+
+The description fills in *when* to use the tool and what to expect from it. A vague description forces the agent to guess — and it will guess wrong.
+
+<details>
+<summary><b>Prompt template — generate a tool schema from function code</b></summary>
+
+```
+I have defined a Python tool function below. Please write a valid JSON schema specification for the purposes of tool calling with Claude.
+
+Ensure the schema includes:
+
+- A clear name for the tool.
+- A descriptive description (3-4 sentences) explaining what the tool does and when to use it.
+- An input_schema that defines all function arguments, their types, and descriptions.
+- A list of required parameters.
+
+Here is the function code:
+
+<tool_function_code>
+[PASTE YOUR FUNCTION CODE HERE]
+</tool_function_code>
+
+Please format the output so I can directly use it in my tools list for the Claude API.
+```
+
+</details>
+
+</details>
+
+<details>
+<summary><b>2. Control what your tool returns</b></summary>
+
+When a tool returns data, the agent reads everything. Noisy, technical, or irrelevant fields waste context and increase the chance of confusion or hallucination.
+
+**The UUID problem** — UUIDs like `a3f9b2c1-4d5e-6789` are meaningless to an LLM. They look like noise, and the agent is more likely to misremember or hallucinate them. Replacing UUIDs with readable identifiers directly reduces errors.
+
+Return only what the agent needs to reason about the next step.
+
+</details>
+
+<details>
+<summary><b>3. Prototype fast, then refine from real use</b></summary>
+
+Build a minimal version and observe how the agent actually uses it before investing in a polished implementation.
+
+- **List contacts** — you may discover the agent never needs a full list; `search_contacts` or `message_contact` covers the real workflows
+- **Read file** — a quick version that reads any path quickly reveals that the agent hits token limits on large files; add a line-count limit parameter
+
+Real usage reveals what the agent actually needs, which is often different from what seemed necessary upfront.
+
+</details>
+
+<details>
+<summary><b>4. Evaluate tool use, not just task output</b></summary>
+
+- Collect metrics beyond accuracy: total tool calls, runtime per call, token consumption, tool errors
+- Track which tools the agent calls together — common co-occurrence patterns are candidates for consolidation into a single tool
+- In evaluation prompts, instruct the agent to output reasoning before tool calls; this triggers chain-of-thought and makes tool selection legible and debuggable
+
+</details>
+
+→ [Tool evaluation cookbook](https://platform.claude.com/cookbook/tool-evaluation-tool-evaluation) · [Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
