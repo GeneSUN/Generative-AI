@@ -6,16 +6,9 @@
 
 ---
 
-## 1. Why Evaluation Matters
+## 0. Why Evaluation Matters
 
-<details>
-<summary><b>Why it matters</b></summary>
 
-- **Evaluation is the only convincing evidence** — A demo or a handful of good examples is anecdotal. Evaluation gives you statistical evidence: how reliable the system is, across what range of inputs, under what conditions. Without it, you can't make a credible claim about your product.
-
-- **Evaluation tells you where to look** — A bad overall score is useless without segmentation. When you know which task types, which tools, or which reasoning steps are failing, you have a direction. Without that, improvement is guesswork.
-
-</details>
 
 <details>
 <summary><b>Why AI agents are harder to evaluate than traditional software</b></summary>
@@ -24,15 +17,15 @@ The fundamental difference is **determinism**.
 
 | | Traditional Software | AI Agent |
 |---|---|---|
-| **System** | Deterministic | Non-deterministic |
+| **System** | Deterministic,Guaranteed — same input always yields same output | Non-deterministic,Probabilistic — correct answer not guaranteed even on a good path |
 | **Path** | Fixed — same steps every run | Variable — tools, order, and reasoning differ each run |
-| **Outcome** | Guaranteed — same input always yields same output | Probabilistic — correct answer not guaranteed even on a good path |
+
 
 </details>
 
 ---
 
-## 2. Components of AI Evaluation
+## 1. A roadmap to great evals for agents, Components of AI Evaluation
 
 <details>
 <summary><b>Components overview</b></summary>
@@ -48,18 +41,15 @@ The fundamental difference is **determinism**.
 | **System Infrastructure** | **Eval Harness** | stable environment, | Each trial should be “isolated” by starting from a clean environment.|
 | *(what orchestrates it)* | **Agent Harness** | The agent's runtime scaffold — wraps the LLM with tools, memory, and environment so it can execute tasks. | |
 
-</details>
-
-
-<details>
-<summary><b>Going from zero to one: a roadmap to great evals for agents</b></summary>
-
 ![alt text](image.png)
 
 </details>
 
 
-### Types of Graders for Agents
+
+
+<details>
+<summary><b>Types of Graders for Agents</b></summary>
 
 <details>
 <summary><b>Code-Based Grader</b></summary>
@@ -78,11 +68,11 @@ The fundamental difference is **determinism**.
 |---|---|
 | Assertion | Best practice — decompose complex scoring into N True/False assertions. More stable and debuggable |
 | Reference Alignment | Provide a gold-standard answer. Check semantic consistency while allowing paraphrase (not literal match) |
-| Rubric Scoring | Avoid vague "score out of 10" prompts. Define judgment boundaries and levels in natural language |
+| Rubric Scoring | Avoid vague “score out of 10” prompts. Define judgment boundaries and levels in natural language |
 | Pairwise Comparison | Don't score — just compare which of A vs. B is better. Ideal for regression and preference testing |
 | Consensus | Three models vote or average. Reduces bias and hallucination from any single model |
 
-- when use "Assertion" or "Rubric Scoring", consider partial credit.
+- when use “Assertion” or “Rubric Scoring”, consider partial credit.
 - calibrate Model-Based Grader with Human Grader
 - review grader process to find grading bugs.
     - For example, Opus 4.5 initially scored 42% on CORE-Bench, until an Anthropic researcher found multiple issues: rigid grading that penalized “96.12” when expecting “96.124991…”,
@@ -101,31 +91,19 @@ The fundamental difference is **determinism**.
 
 </details>
 
-
-
-
-
----
-
-## 3. Tailored Evals by Agent Type
-
-<details>
-<summary><b>Agent type breakdown</b></summary>
-
-| Agent Type | Characteristics | Eval Focus | Graders |
-|---|---|---|---|
-| **Coding / Math** | Most deterministic agent type — answers are right or wrong | Correctness; Safety; Efficiency (token cost, latency) | Unit tests; Static analysis (linting, vulnerability scan); Log verification |
-| **Research** | High hallucination risk; sources shift over time | Factual accuracy; Source credibility; Coverage | Hallucination check (claims grounded in sources); Expert review (human calibration on edge cases) |
-| **Chat** | Multi-dimensional & subjective; requires tool calls | Experience (UX) vs. Risk control (safety) | LLM assertion (empathy check); Tool call check (financial guardrails); User simulator (stress test) |
-
 </details>
 
+
+
+
+
 ---
 
-## 4. Evaluation Lifecycle and Non-Determinism
+## 2. Evaluation Lifecycle and Non-Determinism
+
 
 <details>
-<summary><b>Metrics: Choosing the Right Standard</b></summary>
+<summary><b>Lifecycle: Capability → Regression</b></summary>
 
 Because AI agents are non-deterministic, a single run proves nothing. The metrics you choose must account for this variability.
 
@@ -135,11 +113,6 @@ Because AI agents are non-deterministic, a single run proves nothing. The metric
 | **What it measures** | The agent's ceiling — the best it's capable of | The agent's floor — how stable and reliable it actually is |
 | **Mathematical property** | k ↑ → success rate ↑ | k ↑ → success rate ↓↓↓ |
 | **Typical use case** | Coding agents, creative tasks | Customer-facing agents — customer service, finance, medical, legal |
-
-</details>
-
-<details>
-<summary><b>Lifecycle: Capability → Regression</b></summary>
 
 | | **Capability Evals** | **Regression Evals** |
 |---|---|---|
@@ -168,12 +141,21 @@ The test dataset is a living artifact. A static eval suite drifts out of sync wi
 
 </details>
 
----
+<details>
+<summary><b>Agent type breakdown</b></summary>
 
-## 5. Evaluation Tools
+| Agent Type | Characteristics | Eval Focus | Graders |
+|---|---|---|---|
+| **Coding / Math** | Most deterministic agent type — answers are right or wrong | Correctness; Safety; Efficiency (token cost, latency) | Unit tests; Static analysis (linting, vulnerability scan); Log verification |
+| **Research** | High hallucination risk; sources shift over time | Factual accuracy; Source credibility; Coverage | Hallucination check (claims grounded in sources); Expert review (human calibration on edge cases) |
+| **Chat** | Multi-dimensional & subjective; requires tool calls | Experience (UX) vs. Risk control (safety) | LLM assertion (empathy check); Tool call check (financial guardrails); User simulator (stress test) |
+
+</details>
+
+
 
 <details>
-<summary><b>Tool comparison</b></summary>
+<summary><b>Evaluation framework comparison</b></summary>
 
 | Tool | Description | Best For |
 |---|---|---|
