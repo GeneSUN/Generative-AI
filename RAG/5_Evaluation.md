@@ -193,20 +193,7 @@ Precision@3 = 2/3 = 0.67
 
 ## Best Practices & Implementation Guidelines: The Evaluation Pipeline
 
-### Step 1 — Build a Test Dataset (Synthetic QA dataset/Human dataset)
-
-### Step 2 — Generate Predictions
-
-### Step 3 — Calculate Metrics, Compare and Decide
-
-### Step *. Collect, User Feedback
-
-For example, wifi-Score can do:
-- Diagnosis	“Why is my Wi-Fi score low?”
-- Metric explanation	“What does SNR mean?”
-- Recommendation	“How can I improve my Wi-Fi?”
-
-when evaluate user feedback, I found Recommendation is really bad, because failure case is really diverse, and a lot of case, there is no Recommendation history.
+https://github.com/GeneSUN/Generative-AI/tree/main/Evaluation
 
 ---
 
