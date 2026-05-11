@@ -100,6 +100,8 @@ Tokens                   50   317.1    854   188.4
 
 ## Ragas
 
+![alt text](image.png)
+
    <details> <summary> Correctness/accuracy is rarely used directly in RAG evaluation </summary>
 
 
